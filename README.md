@@ -1,4 +1,54 @@
-# LLM Multi-Agent 2D Simulation
+# Engineering Agents — ECLSS Resilience Loop
+
+Multi-agent simulation platform for virtual-ops ECLSS anomaly detection through design change. Structured after [lunar_agents](https://github.com/sbilxxxx/lunar_agents).
+
+## Repository layout
+
+| Path | Purpose |
+| --- | --- |
+| `src/core/` | Domain-agnostic kernel (agents, simulation loop, LLM, event log) |
+| `src/environment/` | Simulator API boundary (SSOS mock / adapter, ECLSS ops) |
+| `src/scenario/` | Scenario definitions and runners (e.g. `scrubber_degradation`) |
+| `src/experiments/` | Run configs and results |
+| `src/tools/` | CLI and Streamlit dashboard |
+| `src/materials/2d-bar-simulation/` | **Legacy** 2D bar/fire reference sim |
+| `integrations/one_piece/` | Design-change provenance (JSON SSOT) |
+| `docs/` | Architecture and API contracts |
+| `memo/` | Design notes ([mvp_plan.md](memo/mvp_plan.md)) |
+
+Dependency direction: `tools → scenario → environment → core`. See [docs/architecture.md](docs/architecture.md).
+
+## Quick start (new stack)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+```
+
+ECLSS scenario (`scrubber_degradation`) is under active development — see [memo/mvp_plan.md](memo/mvp_plan.md).
+
+### Mock ECLSS (Day 2)
+
+```bash
+python src/scripts/run_mock_eclss.py --steps 50
+```
+
+Writes `telemetry.jsonl`, `health_metrics.jsonl`, and `summary.json` under `src/experiments/results/mock_eclss_demo/`.
+
+## Legacy bar simulation
+
+The original hackathon bar/fire sim lives at `src/materials/2d-bar-simulation/`:
+
+```bash
+cd src/materials/2d-bar-simulation
+python main.py --config config.yaml --save-frames
+```
+
+---
+
+# LLM Multi-Agent 2D Simulation (legacy)
 
 ## 概要
 
@@ -37,7 +87,7 @@ https://github.com/user-attachments/assets/e405f2c3-9518-489d-87c3-c155d7fca38b
 
 #### macOS/Linux の場合:
 ```bash
-# セットアップスクリプトを実行（推奨）
+cd src/materials/2d-bar-simulation
 chmod +x setup_mac.sh
 ./setup_mac.sh
 
@@ -50,7 +100,7 @@ pip install -r requirements.txt
 
 #### Windows の場合:
 ```cmd
-REM セットアップスクリプトを実行（推奨）
+cd src\materials\2d-bar-simulation
 setup_win.bat
 
 REM または手動でセットアップ
@@ -165,6 +215,7 @@ source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate.bat  # Windows
 
 # シミュレーションを実行
+cd src/materials/2d-bar-simulation
 python main.py
 ```
 
