@@ -35,7 +35,8 @@ def default_topology() -> TopologyGraph:
 def default_parameters() -> Dict[str, float]:
     return {
         "scrubber_base_efficiency": 0.95,
-        "co2_production_ppm_per_step": 12.0,
+        "co2_production_ppm_per_step": 32.0,
+        "scrub_rate_coefficient": 0.06,
         "fan_power_w": 80.0,
         "bypass_power_w": 40.0,
         "bypass_flow_bonus": 0.15,

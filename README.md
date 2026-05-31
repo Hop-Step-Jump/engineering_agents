@@ -24,18 +24,25 @@ Dependency direction: `tools → scenario → environment → core`. See [docs/a
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
-pytest
+pytest                    # または: python src/scripts/run_tests.py
 ```
 
 ECLSS scenario (`scrubber_degradation`) is under active development — see [memo/mvp_plan.md](memo/mvp_plan.md).
 
-### Mock ECLSS (Day 2)
+### Mock ECLSS / scrubber_degradation baseline (Day 3)
 
 ```bash
-python src/scripts/run_mock_eclss.py --steps 50
+# Canonical baseline scenario (50 steps, anomaly at step 20)
+python -c "from scenario.runner import run_scenario; print(run_scenario('scrubber_degradation'))"
+
+# Legacy script wrapper (same scenario)
+python src/scripts/run_mock_eclss.py
+
+# Regression guard
+pytest tests/scenario/test_scrubber_baseline.py -q
 ```
 
-Writes `telemetry.jsonl`, `health_metrics.jsonl`, and `summary.json` under `src/experiments/results/mock_eclss_demo/`.
+Writes `telemetry.jsonl`, `health_metrics.jsonl`, `events.jsonl`, `design_state.jsonl`, and `summary.json` under `src/experiments/results/scrubber_degradation_baseline/`.
 
 ## Legacy bar simulation
 

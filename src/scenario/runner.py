@@ -1,0 +1,156 @@
+"""Scenario runner — loads YAML and drives Mock ECLSS with EventLog output."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import yaml
+
+from core.event_log import EventLog
+from environment.eclss_ops.design_state import DesignStateManager
+from environment.eclss_ops.telemetry import compute_health_metrics
+from environment.protocol import AnomalySpec
+from environment.ssos.mock_eclss import MockEclssSimulator
+
+SCENARIO_ROOT = Path(__file__).resolve().parent
+
+
+def list_scenarios() -> List[str]:
+    names = []
+    for path in SCENARIO_ROOT.iterdir():
+        if path.is_dir() and (path / "scenario.yaml").exists():
+            names.append(path.name)
+    return sorted(names)
+
+
+def scenario_config_path(name: str) -> Path:
+    path = SCENARIO_ROOT / name / "scenario.yaml"
+    if not path.exists():
+        raise FileNotFoundError(f"Scenario not found: {name} ({path})")
+    return path
+
+
+def load_scenario_config(name: str, overrides: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    with scenario_config_path(name).open(encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    if overrides:
+        config = _deep_merge(config, overrides)
+    return config
+
+
+def _deep_merge(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, Any]:
+    result = dict(base)
+    for key, value in overrides.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = _deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+def build_simulator(config: Dict[str, Any]) -> MockEclssSimulator:
+    sim_cfg = config.get("simulation", {})
+    design_params = config.get("design_parameters")
+    design = DesignStateManager(parameters=design_params) if design_params else DesignStateManager()
+
+    sim = MockEclssSimulator(
+        initial_co2_ppm=float(sim_cfg.get("initial_co2_ppm", 800.0)),
+        initial_power_margin_w=float(sim_cfg.get("initial_power_margin_w", 150.0)),
+        design=design,
+    )
+
+    for anomaly in config.get("anomalies", []):
+        sim.inject_anomaly(
+            AnomalySpec(
+                name=anomaly["name"],
+                start_step=int(anomaly["start_step"]),
+                scrubber_efficiency_decay_per_step=float(
+                    anomaly.get("scrubber_efficiency_decay_per_step", 0.01)
+                ),
+                power_margin_decay_per_step=float(anomaly.get("power_margin_decay_per_step", 5.0)),
+                co2_production_multiplier=float(anomaly.get("co2_production_multiplier", 1.0)),
+            )
+        )
+    return sim
+
+
+def run_scenario(
+    name: str,
+    output_dir: Optional[Path] = None,
+    overrides: Optional[Dict[str, Any]] = None,
+    recreate_output: bool = True,
+) -> Path:
+    config = load_scenario_config(name, overrides=overrides)
+    sim_cfg = config.get("simulation", {})
+    steps = int(sim_cfg.get("steps", 50))
+    output_cfg = config.get("output", {})
+
+    results_base = Path(__file__).resolve().parents[1] / "experiments" / "results"
+    if output_dir is None:
+        run_id = output_cfg.get("run_id", name)
+        if recreate_output:
+            run_dir = EventLog.prepare_run_dir(results_base, run_id=run_id)
+        else:
+            run_dir = results_base / run_id
+            run_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        run_dir = Path(output_dir)
+        if recreate_output and run_dir.exists():
+            import shutil
+            shutil.rmtree(run_dir)
+        run_dir.mkdir(parents=True, exist_ok=True)
+
+    sim = build_simulator(config)
+    log = EventLog(run_dir)
+
+    peak_co2 = 0.0
+    anomaly_seen = False
+    co2_above_threshold_step: Optional[int] = None
+    last_snap = None
+    last_health = None
+    logged_event_ids: set = set()
+
+    for _ in range(steps):
+        snap = sim.step()
+        last_snap = snap
+        peak_co2 = max(peak_co2, snap.co2_ppm)
+        health = compute_health_metrics(snap)
+        last_health = health
+
+        if snap.anomaly_flags:
+            anomaly_seen = True
+        if snap.co2_ppm > 1000.0 and co2_above_threshold_step is None:
+            co2_above_threshold_step = snap.step
+
+        log.append("telemetry", snap.to_dict())
+        log.append("health_metrics", health.to_dict())
+        log.append("design_state", {"step": snap.step, **sim.get_design_state().to_dict()})
+
+        for idx, event in enumerate(sim.get_events()):
+            event_step = event.get("step", snap.step)
+            if event_step != snap.step:
+                continue
+            key = (event_step, idx, event.get("kind"), json.dumps(event, sort_keys=True, default=str))
+            if key in logged_event_ids:
+                continue
+            logged_event_ids.add(key)
+            log.append("events", {"step": event_step, **{k: v for k, v in event.items() if k != "step"}})
+
+    log.write_summary(
+        {
+            "scenario": name,
+            "simulator": "mock_eclss",
+            "steps": steps,
+            "peak_co2_ppm": round(peak_co2, 2),
+            "final_co2_ppm": last_snap.co2_ppm if last_snap else None,
+            "final_health": last_health.to_dict() if last_health else None,
+            "anomaly_seen": anomaly_seen,
+            "co2_above_threshold_step": co2_above_threshold_step,
+            "design_change_count": sum(
+                1 for e in sim.get_events() if "design_change" in str(e.get("kind", "")).lower()
+            ),
+        }
+    )
+    return run_dir

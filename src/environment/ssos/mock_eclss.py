@@ -64,7 +64,7 @@ class MockEclssSimulator:
             self.co2_ppm
             * self.scrubber_efficiency
             * self.fan_speed
-            * 0.08
+            * params.get("scrub_rate_coefficient", 0.06)
         )
 
         bypass_bonus = 0.0
