@@ -89,6 +89,22 @@ Future: `base` (unlabeled emergent roles) — see [memo/backlog.md](../memo/back
 | `/eclss/command/request_eps_boost` | sub | float watts (0, 500] |
 | `/eclss/events/design_change` | event | DesignChange dict |
 
+## ROS2-like EPS topics (`environment/ssos/eps_topics.py`)
+
+Inspired by [space_station_eps](https://github.com/space-station-os/space_station_os/tree/main/space_station_eps). Mock implementations: `MockSarj`, `MockBcdu`, `EpsStack` (EPS-3 couples to ECLSS).
+
+| Topic | Direction | Payload |
+| --- | --- | --- |
+| `/solar/voltage` | pub | float V (SARJ estimate) |
+| `/bcdu/operation` | sub | discharge goal: `{support_w, duration_steps}` |
+| `/bcdu/status` | pub | `BcduStatus` dict — `mode`, `bus_voltage_v`, `support_w`, `fault`, … |
+| `/eps/diagnostics` | pub | `EpsDiagnostics` dict |
+| `/eps/eclss/load_request_w` | pub | float W (bridge topic; EPS-3) |
+
+**BCDU `mode` values**: `idle`, `charging`, `discharging`, `fault`, `safe`.
+
+**Discharge contract** (`MockBcdu.request_discharge`): `support_w` in (0, 500], `duration_steps` ≥ 1, bus voltage in [70, 120] V. On fault, mode latches `fault` and further discharge requests fail.
+
 ## JSONL event streams
 
 All runs write under `src/experiments/results/<run_id>/`.

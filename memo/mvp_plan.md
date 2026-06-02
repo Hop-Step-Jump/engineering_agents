@@ -70,7 +70,7 @@
 | フェーズ | 優先タスク | 完了条件 |
 | --- | --- | --- |
 | **Day 6** | `tools/dashboard/app.py` 実装（telemetry/health/messages/provenance の同時可視化） | ✅ step同期で CO2推移・役割メッセージ・設計変更履歴を1画面確認 |
-| **Next-1 (Week-2入口)** | SSOS EPS モック統合 — [EPS-1〜4](eps_implementation_plan.md#day-区切りロードマップ) | EPS-1 ✅ インライン `request_eps_boost`；EPS-2〜3 で SARJ/BCDU facade 化 |
+| **Next-1 (Week-2入口)** | SSOS EPS モック統合 — [EPS-1〜4](eps_implementation_plan.md#day-区切りロードマップ) | EPS-1 ✅ インライン boost；EPS-2 ✅ SARJ/BCDU 薄モック；EPS-3 facade 化 |
 | **Next-2** | CLI 統合 — [Day 8](eps_implementation_plan.md#day-8-cli1日) | 1コマンドで baseline/labeled/labeled_shadow/labeled_llm_guarded 実行 + 出力先表示 |
 | **Next-3** | One Piece連携拡張 — [Day 9](eps_implementation_plan.md#day-910-拡張) | run横断で provenance 集計可能、one-piece 側への受け渡し仕様確定 |
 | **Next-4** | SSOS adapter 前倒し準備 — [Day 10](eps_implementation_plan.md#day-910-拡張) | `SsosAdapter` に必要な I/O 契約とテストスタブを確定 |
@@ -192,7 +192,8 @@
 - [x] tools/dashboard/app.py（run選択 / step slider / telemetry+messages+events+provenance 可視化）
 - [x] labeled_llm_guarded 追加（Monitor/Diagnostician/Operator は LLM採用、DesignEngineer は guard付きLLM採用）
 - [x] EPS-1: `request_eps_boost` 回復経路（インライン；EPS-3 で facade 化）— [eps_implementation_plan.md](eps_implementation_plan.md)
-- [ ] EPS-2〜4 — 同上チェックリスト
+- [x] EPS-2: `MockSarj` / `MockBcdu` / `EpsStack` + `test_mock_eps.py`
+- [ ] EPS-3〜4 — 同上チェックリスト
 - [ ] tools/cli + scrubber_demo.yaml E2E（Day 8）
 
 ---

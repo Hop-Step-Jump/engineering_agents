@@ -37,7 +37,7 @@ flowchart LR
 | Day | 名称 | 完了条件（要約） | 状態 |
 | --- | --- | --- | --- |
 | **EPS-1** | 基盤着地 | 未コミット WIP をテスト green のままコミット；`test_scrubber_baseline` 維持 | ✅ 完了 |
-| **EPS-2** | SARJ + BCDU 薄モック | `MockSarj` + `MockBcdu` + `/eps/*` トピック；単体 pytest | 未着手 |
+| **EPS-2** | SARJ + BCDU 薄モック | `MockSarj` + `MockBcdu` + `/eps/*` トピック；単体 pytest | ✅ 完了 |
 | **EPS-3** | ECLSS 連動 | `request_eps_boost` が BCDU discharge 経由；インライン `eps_support_*` を facade に移管 | 未着手 |
 | **EPS-4** | 可観測性 | `eps_telemetry.jsonl`、summary 電力指標、dashboard SARJ/BCDU、provenance EPS trace | 未着手 |
 | **Day 8** | CLI（mvp Next-2） | `python -m tools.cli run --scenario ... --agents-mode ...` | 未着手 |
@@ -94,6 +94,8 @@ src/environment/ssos/
 
 **テスト**: `tests/environment/test_mock_eps.py`  
 **ドキュメント**: [docs/api-contracts.md](../docs/api-contracts.md) に EPS トピック表を追加。
+
+**完了メモ（2026-06-02）**: `eps_types.py`, `eps_topics.py`, `mock_sarj.py`, `mock_bcdu.py`, `eps_stack.py` を追加。ECLSS 連動は EPS-3。
 
 ---
 
@@ -181,7 +183,7 @@ class StationSimulator:
 
 - [x] EPS-1: 基盤着地（コミット + 回帰 green）
 - [ ] サブエージェント 3 体（`~/.cursor/agents/`）
-- [ ] EPS-2: SARJ + BCDU 薄モック
+- [x] EPS-2: SARJ + BCDU 薄モック
 - [ ] EPS-3: StationSimulator + ECLSS 連動
 - [ ] EPS-4: 可観測性（ログ / provenance / dashboard）
 - [ ] Day 8: CLI + E2E
