@@ -27,6 +27,8 @@ Implementations: `MockEclssSimulator` (current), `SsosAdapter` (deferred).
   "fan_speed": 0.7,
   "bypass_enabled": false,
   "load_reduced": false,
+  "eps_support_w": 120.0,
+  "eps_support_steps_remaining": 4,
   "anomaly_flags": ["scrubber_degradation"]
 }
 ```
@@ -41,7 +43,7 @@ Implementations: `MockEclssSimulator` (current), `SsosAdapter` (deferred).
 }
 ```
 
-Supported `kind` values: `set_fan_speed`, `enable_bypass`, `reduce_load`.
+Supported `kind` values: `set_fan_speed`, `enable_bypass`, `reduce_load`, `request_eps_boost`.
 
 ### DesignChange
 
@@ -84,6 +86,7 @@ Future: `base` (unlabeled emergent roles) — see [memo/backlog.md](../memo/back
 | `/eclss/command/set_fan_speed` | sub | float 0–1 |
 | `/eclss/command/enable_bypass` | sub | bool |
 | `/eclss/command/reduce_load` | sub | bool |
+| `/eclss/command/request_eps_boost` | sub | float watts (0, 500] |
 | `/eclss/events/design_change` | event | DesignChange dict |
 
 ## JSONL event streams

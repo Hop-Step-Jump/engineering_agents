@@ -25,6 +25,8 @@ roles:
     fan_speed: 1.0
     enable_bypass: true
     reduce_load_on_power_critical: true
+    request_eps_boost_on_power_critical: true
+    eps_boost_w: 120.0
 
   design_engineer:
     min_step: 35

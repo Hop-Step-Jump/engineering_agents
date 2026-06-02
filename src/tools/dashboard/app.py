@@ -55,8 +55,9 @@ def _line_plot(
     steps = [int(r["step"]) for r in telemetry_rows]
     co2 = [float(r["co2_ppm"]) for r in telemetry_rows]
     power = [float(r["power_margin_w"]) for r in telemetry_rows]
+    eps_support = [float(r.get("eps_support_w", 0.0)) for r in telemetry_rows]
 
-    fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+    fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
     axes[0].plot(steps, co2, color="#1f77b4", linewidth=2)
     axes[0].axhline(1000.0, color="#ff7f0e", linestyle="--", linewidth=1)
     axes[0].axvline(current_step, color="#d62728", linestyle=":", linewidth=1)
@@ -71,6 +72,13 @@ def _line_plot(
     axes[1].set_xlabel("Step")
     axes[1].set_title("Power margin trajectory")
     axes[1].grid(alpha=0.2)
+
+    axes[2].plot(steps, eps_support, color="#9467bd", linewidth=2)
+    axes[2].axvline(current_step, color="#d62728", linestyle=":", linewidth=1)
+    axes[2].set_ylabel("EPS support (W)")
+    axes[2].set_xlabel("Step")
+    axes[2].set_title("EPS support trajectory")
+    axes[2].grid(alpha=0.2)
 
     st.pyplot(fig, use_container_width=True)
 
@@ -122,7 +130,7 @@ def _render_health_card(
     current_telemetry = next((r for r in telemetry_rows if int(r["step"]) == current_step), None)
     current_health = next((r for r in health_rows if int(r["step"]) == current_step), None)
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.metric("Step", current_step)
     with col2:
@@ -131,6 +139,8 @@ def _render_health_card(
         st.metric("Power margin W", f"{(current_telemetry or {}).get('power_margin_w', '-')}")
     with col4:
         st.metric("Overall health", (current_health or {}).get("overall", "-"))
+    with col5:
+        st.metric("EPS support W", f"{(current_telemetry or {}).get('eps_support_w', 0.0)}")
 
 
 def _extract_final_parameters(design_state_rows: List[Dict[str, Any]]) -> Dict[str, float]:
@@ -152,7 +162,7 @@ def _render_run_comparison(
     st.subheader("Run comparison")
     st.caption(f"Primary: `{primary_name}` vs Compare: `{compare_name}`")
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric(
             "Design changes",
@@ -167,6 +177,11 @@ def _render_run_comparison(
         st.metric(
             "Final CO2 ppm",
             f"{primary_summary.get('final_co2_ppm', '-')}/{compare_summary.get('final_co2_ppm', '-')}",
+        )
+    with col4:
+        st.metric(
+            "Final power margin W",
+            f"{primary_summary.get('final_power_margin_w', '-')}/{compare_summary.get('final_power_margin_w', '-')}",
         )
 
     primary_params = _extract_final_parameters(primary_design_state)

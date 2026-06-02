@@ -12,6 +12,7 @@ Living docs for the ECLSS resilience-loop simulation platform.
 Planning and research notes live outside `docs/`:
 
 - [memo/mvp_plan.md](../memo/mvp_plan.md) — week roadmap and task checklist
+- [memo/eps_implementation_plan.md](../memo/eps_implementation_plan.md) — EPS-1〜4 and Day 8–10 (Week-2 entry)
 - [memo/backlog.md](../memo/backlog.md) — BL-001 labeled vs emergent roles, etc.
 
 ## Quick commands
@@ -39,4 +40,4 @@ python -m streamlit run src/tools/dashboard/app.py
 ## Current milestone (through Day6)
 
 - Done: baseline scenario, labeled rule-team, labeled_shadow, labeled_llm_guarded, One Piece provenance export, Day6 dashboard
-- Next: Day7 CLI + E2E, Week-2 connector / SSOS adapter prep
+- Next: [EPS mock plan](../memo/eps_implementation_plan.md) (EPS-1〜4), then Day 8 CLI + E2E and connector/adapter prep

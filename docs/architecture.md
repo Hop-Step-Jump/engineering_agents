@@ -134,13 +134,15 @@ Schema details: [api-contracts.md](api-contracts.md). Scenario narrative: [scena
 | SSOS | Mock adapter (`environment/ssos/mock_eclss.py`); real ROS2 via `SsosAdapter` stub |
 | LLM | Ollama via `core/llm/ollama.py`; used in `labeled_shadow` and `labeled_llm_guarded` modes |
 | One Piece | JSON provenance via `integrations/one_piece/` (Day5B実装済み); web UI deferred |
+| EPS (power) | Next priority: SSOS EPS mock integration before further connector/CLI expansion |
 
 See [one-piece-integration.md](one-piece-integration.md) for the provenance plan.
 
 ## Next implementation focus
 
-1. Day7: CLI integration and E2E entrypoint (`run --scenario ... --agents-mode ...`).
-2. Week-2 entry: One Piece connector handoff format and SSOS adapter contract tests.
+1. EPS mock integration for explicit power-recovery options (`request_eps_boost`) in the simulator loop.
+2. CLI integration and E2E entrypoint (`run --scenario ... --agents-mode ...`).
+3. Week-2 entry: One Piece connector handoff format and SSOS adapter contract tests.
 
 ## Development setup
 

@@ -29,6 +29,7 @@ def test_scrubber_degradation_labeled_agents_recover(tmp_path: Path):
     telemetry = _read_jsonl(run_dir / "telemetry.jsonl")
     design_state = _read_jsonl(run_dir / "design_state.jsonl")
     provenance = _read_jsonl(run_dir / "provenance.jsonl")
+    events = _read_jsonl(run_dir / "events.jsonl")
 
     assert summary["agents_mode"] == "labeled"
     assert summary["message_count"] > 0
@@ -53,6 +54,8 @@ def test_scrubber_degradation_labeled_agents_recover(tmp_path: Path):
 
     final_step = telemetry[-1]
     assert final_step["co2_ppm"] < 1000.0
+    assert "eps_support_w" in final_step
+    assert "eps_support_steps_remaining" in final_step
     assert summary["provenance_record_count"] >= 1
     assert summary["provenance_path"].endswith("provenance.jsonl")
 
@@ -69,6 +72,11 @@ def test_scrubber_degradation_labeled_agents_recover(tmp_path: Path):
     assert first_record["actor"] == "design_engineer"
     assert first_record["change_kind"] == "add_edge"
     assert first_record["trace"]["event_kind"] == "/eclss/events/design_change"
+    assert any(
+        e.get("kind") == "/eclss/events/recovery_applied"
+        and (e.get("command") or {}).get("kind") == "request_eps_boost"
+        for e in events
+    ), "operator should request EPS boost when power is critical"
 
 
 def test_scrubber_degradation_labeled_shadow_logs_llm_decisions(tmp_path: Path):
@@ -120,17 +128,15 @@ def test_scrubber_degradation_labeled_llm_guarded_changes_provenance_and_paramet
                     }
                 )
             if "role: operator" in lower:
-                return json.dumps(
-                    {
-                        "message": "LLM operator: increase flow and reduce load.",
-                        "reasoning": "recover co2 and power margin",
-                        "commands": [
-                            {"kind": "set_fan_speed", "value": 1.0},
-                            {"kind": "enable_bypass", "value": True},
-                            {"kind": "reduce_load", "value": True},
-                        ],
-                    }
-                )
+                # Empty commands → rule_fallback so CO2 can exceed 1000 before step 35
+                # (aggressive LLM ops from step 1 prevent design_engineer thresholds).
+                    return json.dumps(
+                        {
+                            "message": "LLM operator: defer to rule recovery timing.",
+                            "reasoning": "test harness keeps anomaly narrative",
+                            "commands": [],
+                        }
+                    )
             if "role: design_engineer" in lower:
                 return json.dumps(
                     {

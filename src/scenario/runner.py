@@ -216,6 +216,7 @@ def run_scenario(
             "steps": steps,
             "peak_co2_ppm": round(peak_co2, 2),
             "final_co2_ppm": last_snap.co2_ppm if last_snap else None,
+            "final_power_margin_w": last_snap.power_margin_w if last_snap else None,
             "final_health": last_health.to_dict() if last_health else None,
             "anomaly_seen": anomaly_seen,
             "co2_above_threshold_step": co2_above_threshold_step,

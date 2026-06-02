@@ -30,6 +30,7 @@ class ScrubberTeamState:
     load_reduced: bool = False
     design_change_applied: bool = False
     alert_sent: bool = False
+    eps_boost_requested: bool = False
 
 
 class ScrubberDegradationTeam:
@@ -162,7 +163,7 @@ class ScrubberDegradationTeam:
             "No markdown. No code fences. No prose outside JSON. "
             'Required keys: "message", "reasoning", "commands". '
             'commands must be a list of {"kind": "...", "value": ...} with kind in '
-            '["set_fan_speed","enable_bypass","reduce_load"].'
+            '["set_fan_speed","enable_bypass","reduce_load","request_eps_boost"].'
         )
         prompt = (
             "Role: operator in ECLSS scrubber_degradation. "
@@ -253,6 +254,20 @@ class ScrubberDegradationTeam:
             self.state.load_reduced = True
             return (
                 RecoveryCommand(kind=CommandKind.REDUCE_LOAD, value=True, issued_by="operator"),
+                None,
+            )
+        if kind == "request_eps_boost":
+            if self.state.eps_boost_requested:
+                return None, "eps boost already requested"
+            try:
+                watts = float(value)
+            except (TypeError, ValueError):
+                return None, "eps boost value must be numeric"
+            if not (0.0 < watts <= 500.0):
+                return None, "eps boost out of range"
+            self.state.eps_boost_requested = True
+            return (
+                RecoveryCommand(kind=CommandKind.REQUEST_EPS_BOOST, value=watts, issued_by="operator"),
                 None,
             )
         return None, f"unsupported operator command kind: {kind}"
@@ -603,6 +618,28 @@ class ScrubberDegradationTeam:
                     message="Reducing cabin metabolic load to lower CO2 production.",
                     message_type="recovery_command",
                     reasoning="Power margin critical; load shedding.",
+                    metadata=self._rule_metadata(),
+                )
+            )
+
+        if (
+            self.operator_cfg.get("request_eps_boost_on_power_critical", True)
+            and obs.health.power_status == HealthStatus.CRITICAL
+            and not self.state.eps_boost_requested
+        ):
+            eps_boost_w = float(self.operator_cfg.get("eps_boost_w", 120.0))
+            commands.append(
+                RecoveryCommand(kind=CommandKind.REQUEST_EPS_BOOST, value=eps_boost_w, issued_by="operator")
+            )
+            self.state.eps_boost_requested = True
+            messages.append(
+                AgentMessage(
+                    step=obs.step,
+                    from_role="operator",
+                    to_role="team",
+                    message=f"Requesting EPS support boost of {eps_boost_w:.0f} W.",
+                    message_type="recovery_command",
+                    reasoning="Power margin critical; requesting temporary EPS assist.",
                     metadata=self._rule_metadata(),
                 )
             )
