@@ -221,7 +221,7 @@ def test_llm_guarded_operator_coerces_true_string_for_boolean_commands():
     )
     cmd, note = team._guard_operator_command({"kind": "enable_bypass", "value": "false"})
     assert cmd is None
-    assert note == 'value must be true (boolean or "true" string)'
+    assert note == "bypass value must be true"
 
     team = ScrubberDegradationTeam(
         {
