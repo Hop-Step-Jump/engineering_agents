@@ -284,13 +284,13 @@ No strict sync; strengthen **observation contract**:
 **Status**: Investigation complete; fixes require per-item approval  
 **Related**: [known_bugs_inventory.md](ssos_eclss_loop/known_bugs_inventory.md)
 
-Inventory of **unit mismatches (g↔kg, etc.)**, mock dynamics sign/sync bugs, and agent/closed-loop gaps for the ECLSS anomaly-response simulation (IDs A–M).
+Inventory of **unit mismatches (g↔kg, °C, etc.)**, mock dynamics sign/sync bugs, and agent/closed-loop gaps for the ECLSS anomaly-response simulation (IDs A–N).
 
 | Priority | Items | Notes |
 |----------|-------|-------|
 | P0 | **A** (**fixed**) / **E** | Storage unit unified to g; inverted `request_co2` still open |
 | P1 | **F / B / G / C** | Water telemetry desync; mass↔L; ignored goals; unit contract |
-| P2 | **I / J / H / L / M** / **D** (**fixed**) | Failure ignored; unused critical; initials; scrubber power/ref line; product-water unit fixed |
+| P2 | **I / J / H / L / M** / **D** (**fixed**) / **N** (**fixed**) | Failure ignored; unused critical; initials; scrubber power/ref line; product-water and OGS temp units fixed |
 | P2 | **K** | Scrubber proposal re-injection (already noted in AGENTS) |
 
 **Fix policy**: Implement only after review OK for each bug ID. Canonical detail and progress: [known_bugs_inventory.md](ssos_eclss_loop/known_bugs_inventory.md).

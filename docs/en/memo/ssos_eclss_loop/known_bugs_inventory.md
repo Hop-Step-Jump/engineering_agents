@@ -28,8 +28,9 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | K | Loop | Scrubber design proposals not re-injected (known) | High | open (known) |
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
 | M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
+| N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | **fixed** |
 
-Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K**
+Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K → N**
 
 ---
 
@@ -132,6 +133,16 @@ Dashboard Before/After is preview only.
 
 **Status**: open  
 Health 800/1200; plot `axhline(1000)` (policy recovery only).
+
+---
+
+## N — OGS temperature unit mislabel / missing unit
+
+**Status**: **fixed** (2026-07-13)  
+**Files**: `docs/*/memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md`
+
+- `sabatier_temp` was labeled **(K)** with default **300.0** (≈27°C if Kelvin — unrealistic for Sabatier). ARS/WRS limits in the same memo use °C. Corrected label to **°C** (value unchanged).
+- `electrolysis_temp` (100.0) had no unit → annotated **°C**.
 
 ---
 
