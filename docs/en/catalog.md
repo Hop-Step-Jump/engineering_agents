@@ -24,8 +24,7 @@ Full page index for the MkDocs site. Use the header language switcher for 日本
 | | [SSOS EPS ROS2 plan](memo/ssos_eclss_loop/ssos_eps_ros2_connection_plan.md) | EPS bridge (Phase 3) |
 | | [ROS2 graph investigation](memo/ssos_eclss_loop/ssos_ros2_graph_design_investigation.md) | Launch remap research |
 | | [ECLSS physical phenomena](memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md) | ECLSS physics memo |
-| | [ECLSS known bugs inventory](memo/ssos_eclss_loop/known_bugs_inventory.md) | Units, dynamics, closed loop (A–Q) || | [EPS physical phenomena](memo/ssos_eclss_loop/ssos_eps_physical_phenomena_overview.md) | EPS physics memo |
-| | [Persona LLM OOP plan](memo/agents/persona_llm_core_oop_plan.md) | Persona architecture draft |
+| | [ECLSS known bugs inventory](memo/ssos_eclss_loop/known_bugs_inventory.md) | Units, dynamics, closed loop (A–Q) || | [EPS physical phenomena](memo/ssos_eclss_loop/ssos_eps_physical_phenomena_overview.md) | EPS physics memo || | [Persona LLM OOP plan](memo/agents/persona_llm_core_oop_plan.md) | Persona architecture draft |
 | | [Persona workshop draft](memo/agents/persona_workshop_draft.md) | Workshop notes |
 
 GitHub entry points: root [README.md](https://github.com/hirototamura/engineering_agents/blob/main/README.md) and [AGENTS.md](https://github.com/hirototamura/engineering_agents/blob/main/AGENTS.md).
