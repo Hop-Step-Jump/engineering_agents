@@ -290,7 +290,7 @@ Inventory of **unit mismatches (g↔kg, etc.)**, mock dynamics sign/sync bugs, a
 |----------|-------|-------|
 | P0 | **A** (**fixed**) / **E** | Storage unit unified to g; inverted `request_co2` still open |
 | P1 | **F / B / G / C** | Water telemetry desync; mass↔L; ignored goals; unit contract |
-| P2 | **I / J / H / L / M / D** | Failure ignored; unused critical; initials; scrubber power/ref line; doc typo |
+| P2 | **I / J / H / L / M** / **D** (**fixed**) | Failure ignored; unused critical; initials; scrubber power/ref line; product-water unit fixed |
 | P2 | **K** | Scrubber proposal re-injection (already noted in AGENTS) |
 
 **Fix policy**: Implement only after review OK for each bug ID. Canonical detail and progress: [known_bugs_inventory.md](ssos_eclss_loop/known_bugs_inventory.md).

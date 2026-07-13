@@ -27,7 +27,7 @@ Both target research toward future space-station operations software (SSOS). The
 
 ## Dashboard at a glance { #dashboard-at-a-glance }
 
-Simulation results are recorded in JSONL and reviewed in the [Streamlit dashboard](#dashboard). `scrubber_degradation` shows CO₂ ppm, EPS, and topology Before/After; `ssos_eclss_loop` shows storage g, operational timeline, and `ssos_graph` design proposals.
+Simulation results are recorded in JSONL and reviewed in the [Streamlit dashboard](#dashboard). `scrubber_degradation` shows CO₂ ppm, EPS, and topology Before/After; `ssos_eclss_loop` shows storage (CO₂/O₂ in g, product water in L), operational timeline, and `ssos_graph` design proposals.
 
 ### 1. Overview — side-by-side comparison of two runs (scrubber)
 
@@ -93,7 +93,7 @@ Both scenarios use `agents.mode`: `none` / `labeled_rule_base` / `llm`. **Homoge
 
 | | `labeled_rule_base` | `llm` |
 | --- | --- | --- |
-| Source of decisions | `policy` / thresholds (scrubber: CO₂ ppm; ssos: storage g) | Persona + telemetry + team messages (**does not read policy**) |
+| Source of decisions | `policy` / thresholds (scrubber: CO₂ ppm; ssos: storage g / L) | Persona + telemetry + team messages (**does not read policy**) |
 | Discussion | Fixed rule-driven messages | N homogeneous engineers deliberate one round |
 | Actions | Representative issues commands per thresholds | Representative executes LLM `commands` |
 | scrubber runtime | Recovery commands (fan, EPS boost) | Same |
@@ -466,7 +466,7 @@ python -m streamlit run src/tools/dashboard/app.py
 
 Open `http://localhost:8501`. See [Dashboard at a glance](#dashboard-at-a-glance) above.
 
-- **Overview** — single run or two-run comparison (scrubber: CO₂ ppm / EPS; ssos: storage g)  
+- **Overview** — single run or two-run comparison (scrubber: CO₂ ppm / EPS; ssos: storage g / L)  
 - **Step replay** — timeline, messages, reasoning step by step (ssos: operational timeline)  
 - Sidebar run selection; `Compare with another run` for LLM vs LLM comparisons  
 

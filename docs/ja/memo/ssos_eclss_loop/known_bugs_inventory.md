@@ -16,7 +16,7 @@
 | A | 単位 | プラント **g** vs EA 誤ラベル **kg**（数値は g スケール） | Critical | **fixed** |
 | B | 単位 | `input_water_mass` を L タンクから無変換減算 | High | open |
 | C | 単位 | Goal/Service 引数の単位未定義・文書矛盾 | High | open |
-| D | 文書 | 製品水を「kg」と誤記（正は L） | Low | open |
+| D | 文書 | 製品水を質量単位と誤記（正は L） | Low | **fixed** |
 | E | 力学 | `request_co2` が貯蔵を増やす（取り出しと逆） | Critical | open |
 | F | 力学 | OGS 水消費がループ用 `_water` に未反映 | High | open |
 | G | 力学 | ARS/OGS が goal を無視し固定オフセット | High | open |
@@ -42,7 +42,7 @@
 - `scenario.yaml` の `initial_*_storage_g`、`thresholds.*_g`、`mock_dynamics.*_g*`
 - health / policy / summary / dashboard / docs（api-reference 単位列を g）
 
-**残件（別 ID）**: Goal フィールド（`initial_co2_mass` 等）の単位注釈は **C**。製品水の kg 誤記は **D**。
+**残件（別 ID）**: Goal フィールド（`initial_co2_mass` 等）の単位注釈は **C**。
 
 ---
 
@@ -64,12 +64,10 @@ OGS で `product_water_reserve_l -= input_water_mass`。フィールド名は質
 
 ---
 
-## D — overview の製品水 kg 誤記
+## D — overview の製品水単位誤記
 
-**状態**: open  
-**主なファイル**: `docs/en/overview.md`、`docs/ja/overview.md`
-
-製品水を「ストレージ g」と書くが、フィールドは `product_water_reserve_l`。
+**状態**: **fixed**（2026-07-13）  
+**方針**: 製品水は `product_water_reserve_l`（**L**）。CO₂/O₂（g）と一括して質量単位で書かない。overview / scenario / architecture 等の表記を **g / L** に分離。
 
 ---
 
