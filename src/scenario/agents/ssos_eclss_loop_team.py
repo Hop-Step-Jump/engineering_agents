@@ -95,7 +95,22 @@ class SsosEclssLoopTeam(Team):
             event = self._apply_command(backend, cmd)
             if event is not None:
                 events.append(event)
+                if event.get("kind") == "/eclss/events/operational_rejected":
+                    self._rearm_after_command_failure(cmd.kind)
         return events
+
+    def _rearm_after_command_failure(self, kind: str) -> None:
+        """Clear one-shot labeled flags so a failed command can be retried."""
+        if kind == "air_revitalisation":
+            self.state.ars_invoked = False
+            self.state.co2_at_ars_dispatch = None
+        elif kind == "request_co2":
+            self.state.co2_requested = False
+        elif kind == "oxygen_generation":
+            self.state.ogs_invoked = False
+            self.state.o2_at_ogs_dispatch = None
+            # Sabatier feedstock may need another request_co2 before the next OGS.
+            self.state.co2_requested = False
 
     def propose_post_run_design(self, summary: Dict[str, Any]) -> Dict[str, Any]:
         baseline_graph = dict(self.config.get("ssos_graph") or {})
@@ -648,11 +663,17 @@ class SsosEclssLoopTeam(Team):
                 "message": f"unsupported command kind: {kind}",
             }
 
+        success = bool(getattr(result, "success", False))
+        message = getattr(result, "summary_message", None) or getattr(result, "message", "") or ""
         return {
-            "kind": "/eclss/events/operational_applied",
+            "kind": (
+                "/eclss/events/operational_applied"
+                if success
+                else "/eclss/events/operational_rejected"
+            ),
             "command": cmd.to_dict(),
             "result": result.to_dict(),
-            "message": getattr(result, "summary_message", None) or getattr(result, "message", ""),
+            "message": message,
         }
 
     @staticmethod
