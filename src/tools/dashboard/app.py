@@ -15,9 +15,12 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import streamlit.components.v1 as components
 
+from environment.scrubber.eclss_ops.telemetry import CO2_SAFE_PPM, CO2_WARNING_PPM
 from tools.dashboard import ssos_views
 
 RESULTS_ROOT = Path(__file__).resolve().parents[2] / "experiments" / "results"
+# Default labeled_rule_base recovery trigger (agents.yaml); distinct from health bands.
+_CO2_POLICY_RECOVERY_PPM = 1000.0
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -98,11 +101,32 @@ def _build_line_plot_figure(
     axes[0].set_title("Scrubber efficiency (anomaly: scrubber_degradation)")
     axes[0].grid(alpha=0.2)
 
-    axes[1].plot(steps, co2, color="#1f77b4", linewidth=2)
-    axes[1].axhline(1000.0, color="#ff7f0e", linestyle="--", linewidth=1)
+    axes[1].plot(steps, co2, color="#1f77b4", linewidth=2, label="CO2")
+    axes[1].axhline(
+        CO2_SAFE_PPM,
+        color="#2ca02c",
+        linestyle="--",
+        linewidth=1,
+        label=f"health safe (<{CO2_SAFE_PPM:.0f})",
+    )
+    axes[1].axhline(
+        CO2_WARNING_PPM,
+        color="#d62728",
+        linestyle="--",
+        linewidth=1,
+        label=f"health critical (≥{CO2_WARNING_PPM:.0f})",
+    )
+    axes[1].axhline(
+        _CO2_POLICY_RECOVERY_PPM,
+        color="#ff7f0e",
+        linestyle=":",
+        linewidth=1,
+        label=f"policy recovery ({_CO2_POLICY_RECOVERY_PPM:.0f})",
+    )
     _maybe_highlight(axes[1])
     axes[1].set_ylabel("CO2 (ppm)")
     axes[1].set_title("CO2 trajectory")
+    axes[1].legend(loc="upper left", fontsize=8)
     axes[1].grid(alpha=0.2)
 
     axes[2].plot(steps, power, color="#2ca02c", linewidth=2)
