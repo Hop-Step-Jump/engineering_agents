@@ -147,7 +147,7 @@ Phase 7a covers **client-side remap in `Ros2EclssBridge` only**. Without `--ros-
 |------|------|
 | `co2_critical` unused (labeled) | health evaluates critical but labeled rules only use `co2_high` |
 | One Piece provenance heuristic | operational events depend on message parsing |
-| labeled ignores command failure | not reflected in next-step rule branching |
+| labeled ignores command failure | **fixed (bug I)** — `operational_rejected` + flag re-arm |
 | `set_parameter` arbitrary path | allowlist recommended for production SSOS |
 
 ---
@@ -290,7 +290,7 @@ Inventory of **unit mismatches (g↔kg, °C, etc.)**, mock dynamics sign/sync bu
 |----------|-------|-------|
 | P0 | **A** (**fixed**) / **E** (**fixed**) | Storage unit unified to g; `request_co2` sign corrected |
 | P1 | **F / B / G / C** | Water telemetry desync; mass↔L; ignored goals; unit contract |
-| P2 | **I / J / H / L / M** / **D** (**fixed**) / **N** (**fixed**) | Failure ignored; unused critical; initials; scrubber power/ref line; product-water and OGS temp units fixed |
+| P2 | **I** (**fixed**) / **J / H / L / M** / **D** (**fixed**) / **N** (**fixed**) | Failure→rejected done; unused critical; initials; scrubber power/ref line; product-water and OGS temp units fixed |
 | P2 | **K** | Scrubber proposal re-injection (already noted in AGENTS) |
 
 **Fix policy**: Implement only after review OK for each bug ID. Canonical detail and progress: [known_bugs_inventory.md](ssos_eclss_loop/known_bugs_inventory.md).

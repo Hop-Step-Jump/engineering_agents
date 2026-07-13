@@ -23,7 +23,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | F | Dynamics | OGS water use not reflected in loop `_water` | High | open |
 | G | Dynamics | ARS/OGS ignore goals; fixed offsets only | High | open |
 | H | Config | Mock initial CO₂/O₂ disagree across three sources | Low | open |
-| I | Agents | Failures still recorded as `operational_applied` | Medium | open |
+| I | Agents | Failures still recorded as `operational_applied` | Medium | **fixed** |
 | J | Agents | `co2_critical` in health only; unused by labeled | Medium | open |
 | K | Loop | Scrubber design proposals not re-injected (known) | High | open (known) |
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
@@ -102,8 +102,9 @@ Fixed −350 / +100 / −30; parent `total_o2_generated: 120` unrelated to water
 
 ## I — Command failures treated as applied
 
-**Status**: open (also BL-004)  
-**File**: `ssos_eclss_loop_team.py` — always `operational_applied`.
+**Status**: **fixed** (2026-07-13)  
+**Files**: `ssos_eclss_loop_team.py`, `scenario_run.py`  
+Emit `operational_rejected` when `result.success` is false; clear one-shot flags for retry; count summary invoke steps only for applied events.
 
 ---
 
