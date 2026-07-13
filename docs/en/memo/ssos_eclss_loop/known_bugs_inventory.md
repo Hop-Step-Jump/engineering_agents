@@ -13,7 +13,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 
 ## Progress summary
 
-**Landed (fixed)**: 9 · **Not yet landed (open)**: 8 · Total A–Q.
+**Landed (fixed)**: 10 · **Not yet landed (open)**: 7 · Total A–Q.
 
 ### Landed (fixed)
 
@@ -24,6 +24,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | E | Dynamics | `request_co2` **increases** storage (should withdraw) | Critical |
 | I | Agents | Failures still recorded as `operational_applied` | Medium |
 | K | Loop | Scrubber design proposals not re-injected (known) | High |
+| M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low |
 | N | Docs | OGS `sabatier_temp` mislabeled (K); `electrolysis_temp` unit missing | Low |
 | O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low |
 | P | Docs | Stale source paths in `ssos/api-reference.md` | Low |
@@ -40,9 +41,8 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | H | Config | Mock initial CO₂/O₂ disagree across three sources | Low |
 | J | Agents | `co2_critical` in health only; unused by labeled | Medium |
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium |
-| M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low |
 
-Suggested order for remaining opens: **F → B → G → C → J → H → L → M**
+Suggested order for remaining opens: **F → B → G → C → J → H → L**
 
 ---
 
@@ -143,8 +143,10 @@ Health evaluates critical; labeled uses `co2_storage_high_g` only.
 
 ## M — Dashboard CO₂ reference line
 
-**Status**: open  
-Health 800/1200; plot `axhline(1000)` (policy recovery only).
+**Status**: **fixed** (2026-07-13)  
+**Files**: `src/tools/dashboard/app.py`
+
+Plot draws health bands from `CO2_SAFE_PPM` / `CO2_WARNING_PPM` with legend; policy recovery (1000) kept as a distinct dotted line.
 
 ---
 
