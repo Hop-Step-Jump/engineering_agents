@@ -288,7 +288,7 @@ Inventory of **unit mismatches (g↔kg, °C, etc.)**, mock dynamics sign/sync bu
 
 | Priority | Items | Notes |
 |----------|-------|-------|
-| P0 | **A** (**fixed**) / **E** | Storage unit unified to g; inverted `request_co2` still open |
+| P0 | **A** (**fixed**) / **E** (**fixed**) | Storage unit unified to g; `request_co2` sign corrected |
 | P1 | **F / B / G / C** | Water telemetry desync; mass↔L; ignored goals; unit contract |
 | P2 | **I / J / H / L / M** / **D** (**fixed**) / **N** (**fixed**) | Failure ignored; unused critical; initials; scrubber power/ref line; product-water and OGS temp units fixed |
 | P2 | **K** | Scrubber proposal re-injection (already noted in AGENTS) |
