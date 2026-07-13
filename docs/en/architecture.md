@@ -588,7 +588,7 @@ SsosEclssLoopTeam                         # scenario/agents/ssos_eclss_loop_team
 
 `run_ssos_eclss_loop.sh` / `ea-loop` for container runs. ECLSS headless startup is required.
 
-### Health (storage g)
+### Health (storage g / L)
 
 `compute_eclss_storage_health()` — `src/scenario/ssos_eclss_loop/health.py`
 
@@ -621,7 +621,7 @@ SsosEclssLoopTeam                         # scenario/agents/ssos_eclss_loop_team
 
 #### llm
 
-Same pattern as scrubber. Prompt includes storage g and health state (no policy).
+Same pattern as scrubber. Prompt includes storage (g / L) and health state (no policy).
 
 ### Output and dashboard
 
@@ -635,7 +635,7 @@ Same pattern as scrubber. Prompt includes storage g and health state (no policy)
 
 | View (`ssos_views.py`) | Content |
 | --- | --- |
-| Overview | storage g, health cards, 2-run compare |
+| Overview | storage g / L, health cards, 2-run compare |
 | Step replay | operational timeline, `ssos_graph` proposals |
 
 run ID: `ssos_eclss_loop_{baseline|labeled_rule_base|llm}`

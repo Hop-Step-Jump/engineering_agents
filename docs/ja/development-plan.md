@@ -178,7 +178,7 @@
 [ ssos_eclss_loop — Phase 0–7 完了 ]
   EclssBackend (mock | ros2) → SsosEclssLoopTeam(Team)
        ↓ JSONL + design_proposals.json（ssos_graph）
-  Dashboard（storage g / operational timeline）
+  Dashboard（storage g / L / operational timeline）
   ea-loop（Docker）+ graph_rewire（クライアント remap）
 
 [ 未接続・バックログ ]
