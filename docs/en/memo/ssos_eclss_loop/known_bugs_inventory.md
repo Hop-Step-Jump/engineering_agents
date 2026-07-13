@@ -25,7 +25,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | H | Config | Mock initial CO₂/O₂ disagree across three sources | Low | open |
 | I | Agents | Failures still recorded as `operational_applied` | Medium | **fixed** |
 | J | Agents | `co2_critical` in health only; unused by labeled | Medium | open |
-| K | Loop | Scrubber design proposals not re-injected (known) | High | open (known) |
+| K | Loop | Scrubber design proposals not re-injected (known) | High | **fixed** |
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
 | M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
 | N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | **fixed** |
@@ -117,8 +117,8 @@ Health evaluates critical; labeled uses `co2_storage_high_g` only.
 
 ## K — Scrubber proposals not re-injected
 
-**Status**: open (documented in `AGENTS.md`)  
-Dashboard Before/After is preview only.
+**Status**: **fixed** (2026-07-13)  
+`--apply-proposals` merges scrubber `add_edge` / `add_node` / `set_parameter` into config before the next run. Dashboard Before/After remains preview-only.
 
 ---
 

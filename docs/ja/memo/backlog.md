@@ -305,6 +305,6 @@ ECLSS 異常対応シミュレーションにおける **単位不統一（g↔k
 | P0 | **A** (**fixed**) / **E** (**fixed**) | ストレージ単位を g に統一済み；`request_co2` 符号逆も修正済み |
 | P1 | **F / B / G / C** | 水テレメ非連動；mass↔L；goal 無視；単位契約 |
 | P2 | **I** (**fixed**) / **J / H / L / M** / **D** (**fixed**) / **N** (**fixed**) | 失敗時 rejected 化済み；critical 未使用；初期値；scrubber 電力／基準線；製品水・OGS 温度単位は修正済み |
-| P2 | **K** | scrubber 設計提案の再注入（既存 AGENTS 既知） |
+| P2 | **K** (**fixed**) | scrubber 設計提案の `--apply-proposals` 再注入 |
 
 **修正方針**: バグ ID ごとにレビュー OK が出てから実装する。詳細・証拠・進捗は [known_bugs_inventory.md](ssos_eclss_loop/known_bugs_inventory.md) を正とする。

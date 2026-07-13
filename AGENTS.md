@@ -55,7 +55,7 @@ python3 -m tools.cli run ssos_eclss_loop --backend mock --agents-mode labeled_ru
 
 Confirm Run 1 wrote `src/experiments/results/cloud-smoke-run1/design_proposals.json` (`design_domain: ssos_graph`, non-empty `changes`). Confirm Run 2 completed with proposals merged. Compare `cloud-smoke-run2/summary.json` and `telemetry.jsonl` against Run 1 — behavior should reflect applied config while Run 1 artifacts remain intact.
 
-`scrubber_degradation` also emits `design_proposals.json` after a run, but **does not yet re-inject proposals into the next simulation** (dashboard Before/After is preview only). Closing that loop for scrubber is backlog; do not use scrubber alone as proof of a closed loop.
+`scrubber_degradation` also emits `design_proposals.json` after a run. Re-inject into the next run with `--apply-proposals` (same closed-loop pattern as `ssos_eclss_loop`). Dashboard Before/After remains a preview of proposals.
 
 ### Tooling and CI
 
