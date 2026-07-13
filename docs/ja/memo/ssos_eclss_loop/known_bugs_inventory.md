@@ -23,7 +23,7 @@
 | H | 設定 | mock 初期値（CO₂/O₂）の三者不一致 | Low | open |
 | I | エージェント | 失敗でも `operational_applied` → 再試行なし | Medium | **fixed** |
 | J | エージェント | `co2_critical` は health のみ、labeled 未使用 | Medium | open |
-| K | 閉ループ | scrubber 設計提案の次ラン再注入なし（既知） | High | open（既知 backlog） |
+| K | 閉ループ | scrubber 設計提案の次ラン再注入なし（既知） | High | **fixed** |
 | L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium | open |
 | M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low | open |
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
@@ -136,8 +136,10 @@ health は critical を評価、labeled は `co2_storage_high_g` のみ。
 
 ## K — scrubber 設計提案の再注入なし
 
-**状態**: open（既知・`AGENTS.md`）  
-scrubber は提案発行のみ。ダッシュボード Before/After は preview。ssos の `--apply-proposals` 相当が未実装。
+**状態**: **fixed**（2026-07-13）  
+**主なファイル**: `scenario/scrubber_degradation/design_proposals.py`、`scenario_run.py`、`jobs/executor.py`、`runner.build_eclss`
+
+`--apply-proposals` で次ラン開始前に `add_edge` / `add_node` / `set_parameter` を config（`design_topology` / `design_parameters`）へマージ。ダッシュボード Before/After は引き続き preview。
 
 ---
 
