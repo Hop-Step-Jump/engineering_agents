@@ -11,7 +11,7 @@
 
 ## 進捗サマリ
 
-**反映済み** 9 件 / **未反映** 8 件（合計 A–Q）。
+**反映済み** 10 件 / **未反映** 7 件（合計 A–Q）。
 
 ### 反映済み（fixed）
 
@@ -22,6 +22,7 @@
 | E | 力学 | `request_co2` が貯蔵を増やす（取り出しと逆） | Critical |
 | I | エージェント | 失敗でも `operational_applied` → 再試行なし | Medium |
 | K | 閉ループ | scrubber 設計提案の次ラン再注入なし（既知） | High |
+| M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low |
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記；`electrolysis_temp` 単位欠落 | Low |
 | O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low |
 | P | 文書 | `ssos/api-reference.md` のソースパス陳腐 | Low |
@@ -38,9 +39,8 @@
 | H | 設定 | mock 初期値（CO₂/O₂）の三者不一致 | Low |
 | J | エージェント | `co2_critical` は health のみ、labeled 未使用 | Medium |
 | L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium |
-| M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low |
 
-未反映の推奨着手順（案）: **F → B → G → C → J → H → L → M**
+未反映の推奨着手順（案）: **F → B → G → C → J → H → L**
 
 ---
 
@@ -163,10 +163,10 @@ health は critical を評価、labeled は `co2_storage_high_g` のみ。
 
 ## M — ダッシュボード CO₂ 基準線
 
-**状態**: open  
-**主なファイル**: `src/tools/dashboard/app.py`、`eclss_ops/telemetry.py`
+**状態**: **fixed**（2026-07-13）  
+**主なファイル**: `src/tools/dashboard/app.py`
 
-ヘルス: safe &lt; 800 / critical ≥ 1200。プロット: `axhline(1000)`（policy recovery のみ）。
+ヘルス帯（`CO2_SAFE_PPM` 800 / `CO2_WARNING_PPM` 1200）を基準線＋凡例で描画。policy recovery（1000）は点線で区別して残す。
 
 ---
 
