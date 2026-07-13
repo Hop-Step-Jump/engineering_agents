@@ -152,10 +152,10 @@ class SsosEclssLoopTeam(Team):
         rep = self.team_cfg.action_rep_id(obs.step)
         agent_ids = self.team_cfg.agent_ids
         n = len(agent_ids)
-        co2_high = float(self.policy.get("co2_storage_high_kg", 1500.0))
-        o2_low = float(self.policy.get("o2_storage_low_kg", 450.0))
-        co2 = obs.telemetry.co2_storage_kg
-        o2 = obs.telemetry.o2_storage_kg
+        co2_high = float(self.policy.get("co2_storage_high_g", 1500.0))
+        o2_low = float(self.policy.get("o2_storage_low_g", 450.0))
+        co2 = obs.telemetry.co2_storage_g
+        o2 = obs.telemetry.o2_storage_g
 
         if co2 is not None and co2 >= co2_high and not self.state.alert_sent:
             commenter = agent_ids[obs.step % n]
@@ -166,7 +166,7 @@ class SsosEclssLoopTeam(Team):
                     from_role=commenter,
                     to_role="team",
                     message=(
-                        f"CO2 storage {co2:.1f} kg exceeds high band {co2_high:.1f} kg."
+                        f"CO2 storage {co2:.1f} g exceeds high band {co2_high:.1f} g."
                     ),
                     message_type="alert",
                     reasoning="Storage telemetry threshold crossed.",
@@ -242,7 +242,7 @@ class SsosEclssLoopTeam(Team):
                     to_role="team",
                     message="Starting ARS air_revitalisation to vent CO2 from storage.",
                     message_type="operational_command",
-                    reasoning=f"CO2 storage {co2:.1f} kg >= {co2_high:.1f} kg.",
+                    reasoning=f"CO2 storage {co2:.1f} g >= {co2_high:.1f} g.",
                     metadata=self._rule_metadata(),
                 )
             )
@@ -263,9 +263,9 @@ class SsosEclssLoopTeam(Team):
                         step=obs.step,
                         from_role=rep,
                         to_role="team",
-                        message=f"Requesting {amount:.1f} kg CO2 feedstock for Sabatier (OGS).",
+                        message=f"Requesting {amount:.1f} g CO2 feedstock for Sabatier (OGS).",
                         message_type="operational_command",
-                        reasoning=f"O2 storage {o2:.1f} kg <= {o2_low:.1f} kg.",
+                        reasoning=f"O2 storage {o2:.1f} g <= {o2_low:.1f} g.",
                         metadata=self._rule_metadata(),
                     )
                 )
@@ -287,7 +287,7 @@ class SsosEclssLoopTeam(Team):
                     to_role="team",
                     message="Starting OGS oxygen_generation cycle.",
                     message_type="operational_command",
-                    reasoning=f"O2 storage {o2:.1f} kg <= {o2_low:.1f} kg.",
+                    reasoning=f"O2 storage {o2:.1f} g <= {o2_low:.1f} g.",
                     metadata=self._rule_metadata(),
                 )
             )
@@ -678,15 +678,15 @@ _ECLSS_OPERATIONAL_LEVERS = """\
 ### Operational levers (facility reference)
 - air_revitalisation: ARS action — payload fields initial_co2_mass, initial_moisture_content, initial_contaminants (kg / % as plant expects).
 - oxygen_generation: OGS action — payload fields input_water_mass, iodine_concentration.
-- request_co2: Service call — payload {"amount": <kg>} Sabatier feedstock before OGS when needed.
-- request_o2: Service call — payload {"amount": <kg>} withdraw O2 from plant /o2_storage reserve.
+- request_co2: Service call — payload {"amount": <g>} Sabatier feedstock before OGS when needed.
+- request_o2: Service call — payload {"amount": <g>} withdraw O2 from plant /o2_storage reserve.
 Actions are asynchronous; issue only commands justified by Telemetry and team discourse."""
 
 
 def build_llm_situation(obs: EclssLoopObservation) -> str:
     t = obs.telemetry
     telemetry = (
-        f"step={obs.step}, co2_storage_kg={t.co2_storage_kg}, o2_storage_kg={t.o2_storage_kg}, "
+        f"step={obs.step}, co2_storage_g={t.co2_storage_g}, o2_storage_g={t.o2_storage_g}, "
         f"product_water_reserve_l={t.product_water_reserve_l}, "
         f"grey_water_collected_l={t.grey_water_collected_l}, "
         f"ars_failure_enabled={t.ars_failure_enabled}, "
@@ -714,10 +714,10 @@ def build_llm_post_run_situation(
     baseline_graph: Dict[str, Any],
 ) -> str:
     telemetry_summary = (
-        f"steps={summary.get('steps')}, peak_co2_storage_kg={summary.get('peak_co2_storage_kg')}, "
-        f"min_o2_storage_kg={summary.get('min_o2_storage_kg')}, "
-        f"final_co2_storage_kg={summary.get('final_co2_storage_kg')}, "
-        f"final_o2_storage_kg={summary.get('final_o2_storage_kg')}, "
+        f"steps={summary.get('steps')}, peak_co2_storage_g={summary.get('peak_co2_storage_g')}, "
+        f"min_o2_storage_g={summary.get('min_o2_storage_g')}, "
+        f"final_co2_storage_g={summary.get('final_co2_storage_g')}, "
+        f"final_o2_storage_g={summary.get('final_o2_storage_g')}, "
         f"operational_command_count={summary.get('operational_command_count')}, "
         f"ars_invoked_step={summary.get('ars_invoked_step')}, "
         f"ogs_invoked_step={summary.get('ogs_invoked_step')}, "

@@ -48,7 +48,7 @@ def test_ros2_bridge_poll_uses_remapped_topics(monkeypatch):
     monkeypatch.setattr("environment.ssos.ros2.cli.subprocess.run", fake_run)
     snap = Ros2EclssBridge(topic_remap=remap).poll_telemetry()
     assert "/plant/co2_storage" in seen_topics
-    assert snap.co2_storage_kg == pytest.approx(99.0)
+    assert snap.co2_storage_g == pytest.approx(99.0)
 
 
 def test_build_eclss_backend_passes_rewires(tmp_path):

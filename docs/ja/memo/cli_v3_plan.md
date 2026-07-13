@@ -124,7 +124,7 @@ export PYTHONPATH=/ea/src
 
 | 項目 | 内容 |
 | --- | --- |
-| CO2=500kg 初期値 | `scenario.yaml`、mock テスト、ros2 step0 の `plant_initial_co2_storage_kg` 記録・検証 |
+| CO2=500g 初期値 | `scenario.yaml`、mock テスト、ros2 step0 の `plant_initial_co2_storage_g` 記録・検証 |
 | ダッシュボード強化 | 閾値ライン、ops/messages タイムライン、比較、deep link |
 | シナリオ doc | `scenario-ssos-eclss-loop.md` のプラント再現性チェックリスト |
 

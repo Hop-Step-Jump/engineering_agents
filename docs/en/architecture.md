@@ -588,17 +588,17 @@ SsosEclssLoopTeam                         # scenario/agents/ssos_eclss_loop_team
 
 `run_ssos_eclss_loop.sh` / `ea-loop` for container runs. ECLSS headless startup is required.
 
-### Health (storage kg)
+### Health (storage g)
 
 `compute_eclss_storage_health()` — `src/scenario/ssos_eclss_loop/health.py`
 
 | Metric | safe | warning | critical |
 | --- | --- | --- | --- |
-| CO₂ (kg) | < 1500 | 1500 to < 2200 | ≥ 2200 |
-| O₂ (kg) | > 450 | 337.5 to 450 | ≤ 337.5 |
+| CO₂ (g) | < 1500 | 1500 to < 2200 | ≥ 2200 |
+| O₂ (g) | > 450 | 337.5 to 450 | ≤ 337.5 |
 | Product water (L) | > 50 | 25 to 50 | ≤ 25 |
 
-`thresholds.co2_storage_high_kg`, etc. are operational triggers, separate from health bands.
+`thresholds.co2_storage_high_g`, etc. are operational triggers, separate from health bands.
 
 ### Agents
 
@@ -621,7 +621,7 @@ SsosEclssLoopTeam                         # scenario/agents/ssos_eclss_loop_team
 
 #### llm
 
-Same pattern as scrubber. Prompt includes storage kg and health state (no policy).
+Same pattern as scrubber. Prompt includes storage g and health state (no policy).
 
 ### Output and dashboard
 
@@ -635,7 +635,7 @@ Same pattern as scrubber. Prompt includes storage kg and health state (no policy
 
 | View (`ssos_views.py`) | Content |
 | --- | --- |
-| Overview | storage kg, health cards, 2-run compare |
+| Overview | storage g, health cards, 2-run compare |
 | Step replay | operational timeline, `ssos_graph` proposals |
 
 run ID: `ssos_eclss_loop_{baseline|labeled_rule_base|llm}`

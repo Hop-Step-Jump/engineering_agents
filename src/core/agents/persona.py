@@ -200,7 +200,7 @@ def eclss_operational_action_contract() -> str:
         'air_revitalisation payload fields: initial_co2_mass, initial_moisture_content, '
         'initial_contaminants (numeric). '
         'oxygen_generation payload fields: input_water_mass, iodine_concentration (numeric). '
-        'request_co2 / request_o2 payload: {"amount": <kg>}. '
+        'request_co2 / request_o2 payload: {"amount": <g>}. '
         "Empty commands when you and teammates agree to hold this step."
     )
 

@@ -32,9 +32,9 @@ from scenario.ssos_eclss_loop.scenario_run import build_eclss_backend
 class GraphRewireSmokeReport:
     ok: bool
     launch_hint: str
-    baseline_co2_kg: Optional[float] = None
-    identity_remap_co2_kg: Optional[float] = None
-    broken_remap_co2_kg: Optional[float] = None
+    baseline_co2_g: Optional[float] = None
+    identity_remap_co2_g: Optional[float] = None
+    broken_remap_co2_g: Optional[float] = None
     backend_remap_public: Optional[str] = None
     backend_remap_backend: Optional[str] = None
     errors: List[str] = field(default_factory=list)
@@ -54,8 +54,8 @@ def run_graph_rewire_smoke(*, topic_timeout_s: float = 15.0) -> GraphRewireSmoke
         return report
 
     baseline = Ros2EclssBridge(topic_timeout_s=topic_timeout_s).poll_telemetry()
-    report.baseline_co2_kg = baseline.co2_storage_kg
-    if baseline.co2_storage_kg is None:
+    report.baseline_co2_g = baseline.co2_storage_g
+    if baseline.co2_storage_g is None:
         report.errors.append(
             f"baseline poll missing {TOPIC_CO2_STORAGE} — is ECLSS headless running?"
         )
@@ -64,16 +64,16 @@ def run_graph_rewire_smoke(*, topic_timeout_s: float = 15.0) -> GraphRewireSmoke
         topic_remap={TOPIC_CO2_STORAGE: TOPIC_CO2_STORAGE},
         topic_timeout_s=topic_timeout_s,
     ).poll_telemetry()
-    report.identity_remap_co2_kg = identity.co2_storage_kg
-    if baseline.co2_storage_kg is not None and identity.co2_storage_kg is None:
+    report.identity_remap_co2_g = identity.co2_storage_g
+    if baseline.co2_storage_g is not None and identity.co2_storage_g is None:
         report.errors.append("identity remap broke CO2 poll (expected same topic)")
 
     broken = Ros2EclssBridge(
         topic_remap={TOPIC_CO2_STORAGE: "/__ea_graph_rewire_missing__"},
         topic_timeout_s=topic_timeout_s,
     ).poll_telemetry()
-    report.broken_remap_co2_kg = broken.co2_storage_kg
-    if broken.co2_storage_kg is not None:
+    report.broken_remap_co2_g = broken.co2_storage_g
+    if broken.co2_storage_g is not None:
         report.errors.append("broken remap still returned CO2 (remap not applied?)")
 
     config_backend = build_eclss_backend(
