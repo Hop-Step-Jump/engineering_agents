@@ -13,7 +13,7 @@
 
 | ID | 種別 | 概要 | 深刻度 | 状態 |
 | --- | --- | --- | --- | --- |
-| A | 単位 | プラント **g** vs EA **kg**（約 1000 倍） | Critical | open |
+| A | 単位 | プラント **g** vs EA 誤ラベル **kg**（数値は g スケール） | Critical | **fixed** |
 | B | 単位 | `input_water_mass` を L タンクから無変換減算 | High | open |
 | C | 単位 | Goal/Service 引数の単位未定義・文書矛盾 | High | open |
 | D | 文書 | 製品水を「kg」と誤記（正は L） | Low | open |
@@ -33,18 +33,16 @@
 
 ## A — SSOS プラント g vs EA kg
 
-**状態**: open  
-**主なファイル**:
+**状態**: **fixed**（2026-07-13）  
+**方針**: 数値はもともとプラント容量（g）と整合していたため、**正単位を g と確定**し、字段・閾値キー・文書の誤ラベル `*_kg` を `*_g` に改名。値の 1/1000 スケール変換は行わない。
 
-- `docs/*/memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md` — `max_co2_storage` 等を **(g)** と記載
-- `src/scenario/ssos_eclss_loop/scenario.yaml` — 閾値・初期値 `*_kg`
-- `src/scenario/ssos_eclss_loop/health.py` — `*_kg` で合否
-- `src/environment/ssos/eclss/types.py` — 字段名 `co2_storage_kg` / `o2_storage_kg`
-- `docs/*/ssos/api-reference.md` — トピック単位を kg と明記
+**主な変更**:
 
-**証拠（ros2 E2E）**: `e2e_records/` — `input_water_mass: 10` → `total_o2_generated ≈ 8.9`（= 10×0.89、**g** スケール）。`final_o2_storage_kg: 26.7` なのに `o2_status: critical`（閾値 450「kg」と比較）。
+- `EclssTelemetrySnapshot.co2_storage_g` / `o2_storage_g`
+- `scenario.yaml` の `initial_*_storage_g`、`thresholds.*_g`、`mock_dynamics.*_g*`
+- health / policy / summary / dashboard / docs（api-reference 単位列を g）
 
-**影響**: mock は数百〜数千「kg」、ros2 は数十「g」級。診断・復旧判断がスケールごと崩れる。
+**残件（別 ID）**: Goal フィールド（`initial_co2_mass` 等）の単位注釈は **C**。製品水の kg 誤記は **D**。
 
 ---
 
@@ -71,7 +69,7 @@ OGS で `product_water_reserve_l -= input_water_mass`。フィールド名は質
 **状態**: open  
 **主なファイル**: `docs/en/overview.md`、`docs/ja/overview.md`
 
-製品水を「ストレージ kg」と書くが、フィールドは `product_water_reserve_l`。
+製品水を「ストレージ g」と書くが、フィールドは `product_water_reserve_l`。
 
 ---
 
@@ -128,7 +126,7 @@ ARS 常時 −350 kg、OGS 常時 +100 O₂ / CO₂ −30。親の `total_o2_gen
 **状態**: open（BL-004）  
 **主なファイル**: `health.py`、`ssos_eclss_loop_team.py`
 
-health は critical を評価、labeled は `co2_storage_high_kg` のみ。
+health は critical を評価、labeled は `co2_storage_high_g` のみ。
 
 ---
 

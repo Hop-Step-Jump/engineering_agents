@@ -189,14 +189,14 @@ Phase 7a covers **client-side remap in `Ros2EclssBridge` only**. Without `--ros-
 
 CLI v3 focuses on **host one-command runs and results mounts**. The items below belong to the simulation/visualization layer.
 
-### P1 — Plant initial state (CO2=500kg)
+### P1 — Plant initial state (CO2=500g)
 
 | Item | Description |
 | --- | --- |
-| `scenario.yaml` | `simulation.initial_co2_storage_kg: 500` (mock; currently 1500) |
-| ros2 step 0 | Record `/co2_storage` after headless restart as `summary.plant_initial_co2_storage_kg` |
+| `scenario.yaml` | `simulation.initial_co2_storage_g: 500` (mock; currently 1500) |
+| ros2 step 0 | Record `/co2_storage` after headless restart as `summary.plant_initial_co2_storage_g` |
 | Validation | Fail fast if outside tolerance vs target 500 (point to SSOS launch params) |
-| SSOS side | Investigate launch params if headless default ≠ 500kg |
+| SSOS side | Investigate launch params if headless default ≠ 500g |
 
 **Intent**: Run-to-run reset is handled by CLI (headless restart). Target CO2 level and validation are scenario/plant contract.
 
@@ -288,7 +288,7 @@ Inventory of **unit mismatches (g↔kg, etc.)**, mock dynamics sign/sync bugs, a
 
 | Priority | Items | Notes |
 |----------|-------|-------|
-| P0 | **A / E** | Plant g vs EA kg; inverted `request_co2` |
+| P0 | **A** (**fixed**) / **E** | Storage unit unified to g; inverted `request_co2` still open |
 | P1 | **F / B / G / C** | Water telemetry desync; mass↔L; ignored goals; unit contract |
 | P2 | **I / J / H / L / M / D** | Failure ignored; unused critical; initials; scrubber power/ref line; doc typo |
 | P2 | **K** | Scrubber proposal re-injection (already noted in AGENTS) |

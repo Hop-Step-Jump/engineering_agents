@@ -60,7 +60,7 @@ def test_ssos_eclss_loop_baseline_runs(tmp_path: Path):
     assert (run_dir / "design_state.jsonl").exists() is False
     assert not (run_dir / "design_proposals.json").exists()
 
-    co2_series = [row["co2_storage_kg"] for row in telemetry]
+    co2_series = [row["co2_storage_g"] for row in telemetry]
     assert co2_series[0] == pytest.approx(1500.0)
     assert co2_series[-1] > co2_series[0], "CO2 should rise without agent intervention"
 
@@ -100,8 +100,8 @@ def test_ssos_eclss_loop_labeled_agents_invoke_ars(tmp_path: Path):
     )
 
     assert telemetry[0]["step"] == 1
-    assert telemetry[0]["co2_storage_kg"] == pytest.approx(1500.0)
-    assert telemetry[1]["co2_storage_kg"] < telemetry[0]["co2_storage_kg"], (
+    assert telemetry[0]["co2_storage_g"] == pytest.approx(1500.0)
+    assert telemetry[1]["co2_storage_g"] < telemetry[0]["co2_storage_g"], (
         "ARS should reduce CO2 storage after step 1"
     )
     assert (run_dir / "design_proposals.json").exists()
@@ -116,8 +116,8 @@ def test_ssos_eclss_loop_labeled_policy_matches_thresholds(tmp_path: Path):
         output_dir=tmp_path / "policy_thresholds",
         overrides={
             "agents": {"mode": "labeled_rule_base"},
-            "thresholds": {"co2_storage_high_kg": 1600.0, "o2_storage_low_kg": 430.0},
-            "simulation": {"initial_co2_storage_kg": 1650.0},
+            "thresholds": {"co2_storage_high_g": 1600.0, "o2_storage_low_g": 430.0},
+            "simulation": {"initial_co2_storage_g": 1650.0},
         },
         recreate_output=True,
     )
@@ -193,7 +193,7 @@ def test_ssos_eclss_loop_labeled_agents_ogs_when_o2_low(tmp_path: Path):
         output_dir=tmp_path / "ogs",
         overrides={
             "agents": {"mode": "labeled_rule_base"},
-            "simulation": {"initial_o2_storage_kg": 420.0},
+            "simulation": {"initial_o2_storage_g": 420.0},
         },
         recreate_output=True,
     )
@@ -244,7 +244,7 @@ def test_ssos_eclss_loop_llm_agents_invoke_ars(tmp_path: Path, monkeypatch):
                 return json.dumps(
                     {
                         "message": "CO2 storage at band edge; ARS may be warranted.",
-                        "reasoning": "co2_storage_kg telemetry elevated",
+                        "reasoning": "co2_storage_g telemetry elevated",
                     }
                 )
             if "phase: deliberation" in lower and "eclss_operator_2" in lower:

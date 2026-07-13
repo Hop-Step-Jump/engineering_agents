@@ -204,7 +204,7 @@ def test_run_ssos_in_container_failure_ignores_stale_summary(tmp_path: Path):
     summary_dir = _HOST_RESULTS_MOUNT / "ssos_eclss_loop_labeled_rule_base"
     summary_dir.mkdir(parents=True, exist_ok=True)
     (summary_dir / "summary.json").write_text(
-        json.dumps({"final_co2_storage_kg": 1570.0}),
+        json.dumps({"final_co2_storage_g": 1570.0}),
         encoding="utf-8",
     )
     spec = RunSpec(

@@ -19,7 +19,7 @@ Both target research toward future space-station operations software (SSOS). The
 | --- | --- | --- |
 | Purpose | Mock CO₂ scrubber anomaly with EPS coupling | SSOS live ECLSS operations (Crew Simulation replacement) |
 | Backend | `StationSimulator` | `EclssBackend` (mock / `Ros2EclssBridge`) |
-| Telemetry | CO₂ ppm, power margin | CO₂/O₂/water storage (kg / L) |
+| Telemetry | CO₂ ppm, power margin | CO₂/O₂/water storage (g / L) |
 | Runtime | Recovery commands (fan, EPS boost) | Operational commands (ARS, OGS, request_co2) |
 | Post-run | Scrubber topology | `ssos_graph` (`action_profile`, `graph_rewire`) |
 
@@ -27,7 +27,7 @@ Both target research toward future space-station operations software (SSOS). The
 
 ## Dashboard at a glance { #dashboard-at-a-glance }
 
-Simulation results are recorded in JSONL and reviewed in the [Streamlit dashboard](#dashboard). `scrubber_degradation` shows CO₂ ppm, EPS, and topology Before/After; `ssos_eclss_loop` shows storage kg, operational timeline, and `ssos_graph` design proposals.
+Simulation results are recorded in JSONL and reviewed in the [Streamlit dashboard](#dashboard). `scrubber_degradation` shows CO₂ ppm, EPS, and topology Before/After; `ssos_eclss_loop` shows storage g, operational timeline, and `ssos_graph` design proposals.
 
 ### 1. Overview — side-by-side comparison of two runs (scrubber)
 
@@ -55,7 +55,7 @@ Follow one run step by step with synchronized timeline, agent messages, reasonin
 
 ### ssos_eclss_loop — storage and operational timeline
 
-When you select an `ssos_eclss_loop` run, the dashboard shows **CO₂ / O₂ / product water storage kg** plots, health cards (safe / warning / critical), and an **operational timeline** (`air_revitalisation`, `oxygen_generation`, `request_co2`, etc. as `operational_applied`). Compare labeled vs LLM or different models across two runs. Post-run `ssos_graph` proposals (`action_profile`, `graph_rewire`) are available from Step replay.
+When you select an `ssos_eclss_loop` run, the dashboard shows **CO₂ / O₂ (g) / product water (L)** plots, health cards (safe / warning / critical), and an **operational timeline** (`air_revitalisation`, `oxygen_generation`, `request_co2`, etc. as `operational_applied`). Compare labeled vs LLM or different models across two runs. Post-run `ssos_graph` proposals (`action_profile`, `graph_rewire`) are available from Step replay.
 
 Details: [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md#dashboard-views).
 
@@ -93,7 +93,7 @@ Both scenarios use `agents.mode`: `none` / `labeled_rule_base` / `llm`. **Homoge
 
 | | `labeled_rule_base` | `llm` |
 | --- | --- | --- |
-| Source of decisions | `policy` / thresholds (scrubber: CO₂ ppm; ssos: storage kg) | Persona + telemetry + team messages (**does not read policy**) |
+| Source of decisions | `policy` / thresholds (scrubber: CO₂ ppm; ssos: storage g) | Persona + telemetry + team messages (**does not read policy**) |
 | Discussion | Fixed rule-driven messages | N homogeneous engineers deliberate one round |
 | Actions | Representative issues commands per thresholds | Representative executes LLM `commands` |
 | scrubber runtime | Recovery commands (fan, EPS boost) | Same |
@@ -141,11 +141,11 @@ Spec: [scenario-scrubber-degradation.md](scenario-scrubber-degradation.md).
 | **ARS** | Air Revitalisation System | CO₂ storage removal (`air_revitalisation` Action) |
 | **OGS** | Oxygen Generation System | O₂ generation (`oxygen_generation`). Sabatier needs CO₂ feedstock |
 | **WRS** | Water Recovery System | Water recovery (`water_recovery_systems`) — ros2 bridge implemented |
-| **Telemetry** | — | `/co2_storage`, `/o2_storage`, `/wrs/product_water_reserve` (kg / L) |
+| **Telemetry** | — | `/co2_storage`, `/o2_storage`, `/wrs/product_water_reserve` (g / L) |
 | **Operational command** | — | ARS / OGS Actions, `request_co2` / `request_o2` Services |
 | **Design proposal** | — | `ssos_graph` (`action_profile`, `graph_rewire`, etc.) |
 
-**Health thresholds (storage)**: CO₂ warning ≥ 1500 kg / critical ≥ 2200 kg; O₂ warning ≤ 450 kg / critical ≤ 337.5 kg. Details: [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md).
+**Health thresholds (storage)**: CO₂ warning ≥ 1500 g / critical ≥ 2200 g; O₂ warning ≤ 450 g / critical ≤ 337.5 g. Details: [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md).
 
 #### SSOS ECLSS subsystems (conceptual)
 
@@ -445,12 +445,12 @@ Details: [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md).
 
 | File | Description |
 | --- | --- |
-| `telemetry.jsonl` | CO₂/O₂/water storage (kg / L) |
+| `telemetry.jsonl` | CO₂/O₂/water storage (g / L) |
 | `health_metrics.jsonl` | Storage-based safe / warning / critical |
 | `messages.jsonl` | `operational_command`, deliberation, reasoning |
 | `events.jsonl` | `operational_applied` / `operational_rejected` |
 | `design_proposals.json` | Post-run `ssos_graph` (`action_profile`, `graph_rewire`, etc.) |
-| `summary.json` | `backend`, `peak_co2_storage_kg`, `operational_command_count`, etc. |
+| `summary.json` | `backend`, `peak_co2_storage_g`, `operational_command_count`, etc. |
 | `provenance.jsonl` | Operational records (`record_type: operational`) |
 
 Schema details: [docs/api-contracts.md](api-contracts.md) · Reading outputs: [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md#reading-outputs)
@@ -466,7 +466,7 @@ python -m streamlit run src/tools/dashboard/app.py
 
 Open `http://localhost:8501`. See [Dashboard at a glance](#dashboard-at-a-glance) above.
 
-- **Overview** — single run or two-run comparison (scrubber: CO₂ ppm / EPS; ssos: storage kg)  
+- **Overview** — single run or two-run comparison (scrubber: CO₂ ppm / EPS; ssos: storage g)  
 - **Step replay** — timeline, messages, reasoning step by step (ssos: operational timeline)  
 - Sidebar run selection; `Compare with another run` for LLM vs LLM comparisons  
 

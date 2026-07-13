@@ -1,7 +1,7 @@
 
 # Scenario: ssos_eclss_loop
 
-Reference scenario where an **agent team** operates real ROS2 **ECLSS** (Environmental Control and Life Support System) inside **SSOS** (Space Station OS) Docker instead of Crew Simulation. The team monitors **storage kg** for CO₂ / O₂ / product water, issues operational commands (ARS / OGS, etc.) when thresholds are exceeded, and proposes permanent `ssos_graph` design after the run.
+Reference scenario where an **agent team** operates real ROS2 **ECLSS** (Environmental Control and Life Support System) inside **SSOS** (Space Station OS) Docker instead of Crew Simulation. The team monitors **storage g** for CO₂ / O₂ / product water, issues operational commands (ARS / OGS, etc.) when thresholds are exceeded, and proposes permanent `ssos_graph` design after the run.
 
 > Run commands: [Overview](overview.md#how-to-run) and [How to run](#how-to-run) below. Architecture: [architecture.md](architecture.md). Contrast with scrubber: [scenario-scrubber-degradation.md](scenario-scrubber-degradation.md).
 
@@ -12,7 +12,7 @@ Reference scenario where an **agent team** operates real ROS2 **ECLSS** (Environ
 | Aspect | scrubber_degradation | ssos_eclss_loop |
 | --- | --- | --- |
 | Backend | `StationSimulator` (Python mock) | `EclssBackend` (`LoopMockEclssBackend` / `Ros2EclssBridge`) |
-| Telemetry | CO₂ ppm, scrubber efficiency, power margin | `/co2_storage`, `/o2_storage`, `/wrs/product_water_reserve` (kg / L) |
+| Telemetry | CO₂ ppm, scrubber efficiency, power margin | `/co2_storage`, `/o2_storage`, `/wrs/product_water_reserve` (g / L) |
 | Runtime ops | Recovery commands (fan, EPS boost, etc.) | Operational commands (ARS Action, OGS Action, CO₂ Service, etc.) |
 | Post-run proposals | Scrubber topology (`add_edge`, etc.) | `design_domain: ssos_graph` (`action_profile`, `graph_rewire`, etc.) |
 | Environment | Host Python only | mock on host OK. **ros2** requires SSOS Docker + ECLSS headless |
@@ -62,8 +62,8 @@ Questions this scenario answers:
 | Action | `water_recovery_systems` | Start WRS cycle |
 | Service | `/ars/request_co2` | CO₂ supply for Sabatier |
 | Service | `/ogs/request_o2` | O₂ withdrawal |
-| Topic | `/co2_storage` | CO₂ storage (kg) |
-| Topic | `/o2_storage` | O₂ storage (kg) |
+| Topic | `/co2_storage` | CO₂ storage (g) |
+| Topic | `/o2_storage` | O₂ storage (g) |
 | Topic | `/wrs/product_water_reserve` | Product water (L) |
 
 Type constants: `src/environment/ssos/eclss_topics.py`. Bridge: `src/environment/ssos/ros2_eclss_bridge.py`.
@@ -77,7 +77,7 @@ Type constants: `src/environment/ssos/eclss_topics.py`. Bridge: `src/environment
 | Phase | Content |
 | --- | --- |
 | Each step | `poll_telemetry()` only. No operational commands |
-| mock | CO₂ increases by `co2_growth_kg_per_step` each step (default +60 kg/step) |
+| mock | CO₂ increases by `co2_growth_g_per_step` each step (default +60 g/step) |
 | ros2 | Natural dynamics of the live SSOS plant (left idle without Crew Simulation) |
 | Post-run | No `design_proposals.json` |
 
@@ -89,8 +89,8 @@ Baseline runs show how storage evolves without agent intervention.
 
 | Condition (typical) | Operational command |
 | --- | --- |
-| CO₂ ≥ `co2_storage_high_kg` (default 1500 kg) | `air_revitalisation` (ARS) |
-| O₂ ≤ `o2_storage_low_kg` (default 450 kg) | `request_co2` first (policy default ON) → `oxygen_generation` (OGS) |
+| CO₂ ≥ `co2_storage_high_g` (default 1500 g) | `air_revitalisation` (ARS) |
+| O₂ ≤ `o2_storage_low_g` (default 450 g) | `request_co2` first (policy default ON) → `oxygen_generation` (OGS) |
 
 **Re-arm**: If storage does not improve after ARS / OGS, the next step can retry (`co2_at_ars_dispatch` / `o2_at_ogs_dispatch` boundaries).
 
@@ -114,22 +114,22 @@ Each step: all N agents deliberate → representative issues `operational_comman
 ```yaml
 simulation:
   steps: 8
-  initial_co2_storage_kg: 1500.0
-  initial_o2_storage_kg: 480.0
+  initial_co2_storage_g: 1500.0
+  initial_o2_storage_g: 480.0
   initial_product_water_l: 100.0
 
 backend:
   kind: mock  # mock | ros2 — also overridable via SSOS_ECLSS_BACKEND env var
 
 mock_dynamics:
-  co2_growth_kg_per_step: 60.0
-  ars_co2_reduction_kg: 350.0
-  ogs_o2_gain_kg: 100.0
+  co2_growth_g_per_step: 60.0
+  ars_co2_reduction_g: 350.0
+  ogs_o2_gain_g: 100.0
 
 thresholds:
-  co2_storage_high_kg: 1500.0
-  co2_storage_critical_kg: 2200.0
-  o2_storage_low_kg: 450.0
+  co2_storage_high_g: 1500.0
+  co2_storage_critical_g: 2200.0
+  o2_storage_low_g: 450.0
   product_water_low_l: 50.0
 
 agents:
@@ -173,12 +173,12 @@ llm:
 
 | Metric | safe | warning | critical |
 | --- | --- | --- | --- |
-| CO₂ storage (kg) | < high (1500) | high to < critical | ≥ critical (2200) |
-| O₂ storage (kg) | > low (450) | low×0.75 to low | ≤ low×0.75 (337.5) |
+| CO₂ storage (g) | < high (1500) | high to < critical | ≥ critical (2200) |
+| O₂ storage (g) | > low (450) | low×0.75 to low | ≤ low×0.75 (337.5) |
 | Product water (L) | > low (50) | low×0.5 to low | ≤ low×0.5 (25) |
 | `overall` | all safe | worse of the two | worse of the two |
 
-Agent operational triggers (`co2_storage_high_kg`, etc.) come from `scenario.yaml` `thresholds`. Health bands are recorded independently from telemetry.
+Agent operational triggers (`co2_storage_high_g`, etc.) come from `scenario.yaml` `thresholds`. Health bands are recorded independently from telemetry.
 
 ### Operational commands (runtime)
 
@@ -268,7 +268,7 @@ python -m scenario.ssos_eclss_loop.scenario_run --mock --agents-mode llm \
 
 | File | When to read |
 | --- | --- |
-| `telemetry.jsonl` | CO₂/O₂/water storage time series (kg / L) |
+| `telemetry.jsonl` | CO₂/O₂/water storage time series (g / L) |
 | `health_metrics.jsonl` | Storage-based safe / warning / critical |
 | `messages.jsonl` | `operational_command`, deliberation, reasoning |
 | `events.jsonl` | `operational_applied` / `operational_rejected` |
@@ -284,8 +284,8 @@ python -m scenario.ssos_eclss_loop.scenario_run --mock --agents-mode llm \
 ```json
 {
   "step": 3,
-  "co2_storage_kg": 1680.0,
-  "o2_storage_kg": 465.0,
+  "co2_storage_g": 1680.0,
+  "o2_storage_g": 465.0,
   "product_water_reserve_l": 100.0
 }
 ```
@@ -323,8 +323,8 @@ python -m scenario.ssos_eclss_loop.scenario_run --mock --agents-mode llm \
 | Field | Meaning |
 | --- | --- |
 | `backend` | `mock` or `ros2` |
-| `peak_co2_storage_kg` | Maximum CO₂ storage during run |
-| `final_co2_storage_kg` / `final_o2_storage_kg` | Storage at final step |
+| `peak_co2_storage_g` | Maximum CO₂ storage during run |
+| `final_co2_storage_g` / `final_o2_storage_g` | Storage at final step |
 | `operational_command_count` | Operational commands issued |
 | `ogs_invoked_step` / `co2_requested_step` | First OGS / request_co2 step |
 | `design_proposal_count` | Post-run change count |
@@ -337,7 +337,7 @@ python -m scenario.ssos_eclss_loop.scenario_run --mock --agents-mode llm \
 
 Runs with `summary.scenario == "ssos_eclss_loop"` branch to `src/tools/dashboard/ssos_views.py`.
 
-1. **Overview** — CO₂ / O₂ / water storage kg plots, health cards, 2-run compare
+1. **Overview** — CO₂ / O₂ / water storage g plots, health cards, 2-run compare
 2. **Step replay** — `operational_applied` timeline, utterances / reasoning, storage plots
 3. **Design proposals** — `ssos_graph` `action_profile` / `graph_rewire` preview
 

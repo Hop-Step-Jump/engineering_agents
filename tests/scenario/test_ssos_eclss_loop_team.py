@@ -18,8 +18,8 @@ def _team_config():
         "discourse_window": 4,
         "team": {"count": 2, "id_prefix": "op", "persona": "operator"},
         "policy": {
-            "co2_storage_high_kg": 1500.0,
-            "o2_storage_low_kg": 450.0,
+            "co2_storage_high_g": 1500.0,
+            "o2_storage_low_g": 450.0,
             "request_co2_before_ogs": True,
             "request_co2_amount": 10.0,
             "ars_goal": {"initial_co2_mass": 900.0},
@@ -32,7 +32,7 @@ def test_team_applies_ars_to_backend():
     team = SsosEclssLoopTeam(_team_config())
     backend = LoopMockEclssBackend(
         {
-            "simulation": {"initial_co2_storage_kg": 1700.0, "initial_o2_storage_kg": 500.0},
+            "simulation": {"initial_co2_storage_g": 1700.0, "initial_o2_storage_g": 500.0},
             "mock_dynamics": {},
         }
     )
@@ -46,13 +46,13 @@ def test_team_applies_ars_to_backend():
     assert len(events) == 1
     assert events[0]["kind"] == "/eclss/events/operational_applied"
     assert backend.last_ars_goal is not None
-    assert backend.poll_telemetry().co2_storage_kg < 1700.0
+    assert backend.poll_telemetry().co2_storage_g < 1700.0
 
 
 def test_team_no_design_change_commands():
     team = SsosEclssLoopTeam(_team_config())
     backend = LoopMockEclssBackend({"simulation": {}, "mock_dynamics": {}})
-    snap = EclssTelemetrySnapshot(co2_storage_kg=800.0, o2_storage_kg=600.0)
+    snap = EclssTelemetrySnapshot(co2_storage_g=800.0, o2_storage_g=600.0)
     obs = EclssLoopObservation(step=0, telemetry=snap, health={"overall": "safe"})
     outcome = team.run_step(backend, obs)
     assert outcome.commands == []
@@ -61,7 +61,7 @@ def test_team_no_design_change_commands():
 def test_llm_situation_uses_health_status_keys():
     from scenario.agents.ssos_eclss_loop_team import build_llm_situation
 
-    snap = EclssTelemetrySnapshot(co2_storage_kg=1600.0, o2_storage_kg=420.0)
+    snap = EclssTelemetrySnapshot(co2_storage_g=1600.0, o2_storage_g=420.0)
     obs = EclssLoopObservation(
         step=2,
         telemetry=snap,
@@ -88,8 +88,8 @@ def test_team_rearms_ars_when_ineffective():
     team = SsosEclssLoopTeam(_team_config())
     backend = LoopMockEclssBackend(
         {
-            "simulation": {"initial_co2_storage_kg": 1600.0, "initial_o2_storage_kg": 500.0},
-            "mock_dynamics": {"co2_growth_kg_per_step": 0.0, "ars_co2_reduction_kg": 0.0},
+            "simulation": {"initial_co2_storage_g": 1600.0, "initial_o2_storage_g": 500.0},
+            "mock_dynamics": {"co2_growth_g_per_step": 0.0, "ars_co2_reduction_g": 0.0},
         }
     )
     snap0 = backend.poll_telemetry()
@@ -97,7 +97,7 @@ def test_team_rearms_ars_when_ineffective():
     outcome0 = team.run_step(backend, obs0)
     team.apply_outcome(backend, outcome0)
     assert team.state.ars_invoked is True
-    assert snap0.co2_storage_kg == backend.poll_telemetry().co2_storage_kg
+    assert snap0.co2_storage_g == backend.poll_telemetry().co2_storage_g
 
     backend.advance_step()
     snap1 = backend.poll_telemetry()
@@ -110,11 +110,11 @@ def test_team_rearms_ars_after_co2_drops_below_threshold():
     team = SsosEclssLoopTeam(_team_config())
     backend = LoopMockEclssBackend(
         {
-            "simulation": {"initial_co2_storage_kg": 1700.0, "initial_o2_storage_kg": 500.0},
-            "mock_dynamics": {"co2_growth_kg_per_step": 100.0, "ars_co2_reduction_kg": 400.0},
+            "simulation": {"initial_co2_storage_g": 1700.0, "initial_o2_storage_g": 500.0},
+            "mock_dynamics": {"co2_growth_g_per_step": 100.0, "ars_co2_reduction_g": 400.0},
         }
     )
-    co2_high = float(team.policy["co2_storage_high_kg"])
+    co2_high = float(team.policy["co2_storage_high_g"])
 
     snap = backend.poll_telemetry()
     obs0 = EclssLoopObservation(step=0, telemetry=snap, health={"overall": "warning"})
@@ -124,7 +124,7 @@ def test_team_rearms_ars_after_co2_drops_below_threshold():
 
     backend.advance_step()
     snap1 = backend.poll_telemetry()
-    assert snap1.co2_storage_kg < co2_high
+    assert snap1.co2_storage_g < co2_high
     obs1 = EclssLoopObservation(step=1, telemetry=snap1, health={"overall": "safe"})
     team.run_step(backend, obs1)
     assert team.state.ars_invoked is False
@@ -132,7 +132,7 @@ def test_team_rearms_ars_after_co2_drops_below_threshold():
     for _ in range(4):
         backend.advance_step()
     snap_high = backend.poll_telemetry()
-    assert snap_high.co2_storage_kg >= co2_high
+    assert snap_high.co2_storage_g >= co2_high
     obs_high = EclssLoopObservation(step=5, telemetry=snap_high, health={"overall": "warning"})
     outcome_high = team.run_step(backend, obs_high)
     assert any(cmd.kind == "air_revitalisation" for cmd in outcome_high.commands)
@@ -141,12 +141,12 @@ def test_team_rearms_ars_after_co2_drops_below_threshold():
 def test_loop_mock_request_o2_withdraws_plant_storage():
     backend = LoopMockEclssBackend(
         {
-            "simulation": {"initial_o2_storage_kg": 100.0},
+            "simulation": {"initial_o2_storage_g": 100.0},
             "mock_dynamics": {},
         }
     )
     backend.request_o2(25.0)
-    assert backend.poll_telemetry().o2_storage_kg == pytest.approx(75.0)
+    assert backend.poll_telemetry().o2_storage_g == pytest.approx(75.0)
 
 
 def test_llm_operational_parse_air_revitalisation_and_request_co2():
@@ -186,7 +186,7 @@ def test_llm_design_parse_accepts_ssos_change_kinds():
             },
             {
                 "change_kind": "set_parameter",
-                "payload": {"target": "agents.policy.co2_storage_high_kg", "value": 1600.0},
+                "payload": {"target": "agents.policy.co2_storage_high_g", "value": 1600.0},
             },
         ]
     )

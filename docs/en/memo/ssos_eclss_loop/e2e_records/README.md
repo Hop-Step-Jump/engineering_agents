@@ -22,10 +22,10 @@ ea-loop --agents-mode labeled_rule_base --output-dir /tmp/e2e_labeled_ros2
 
 **events.jsonl (step 0)**:
 
-- `request_co2` — applied (SSOS: `Insufficient CO₂ in storage` — live plant CO₂=0 kg)
+- `request_co2` — applied (SSOS: `Insufficient CO₂ in storage` — live plant CO₂=0 g)
 - `oxygen_generation` — **SUCCEEDED** (`total_o2_generated: ~8.9 kg`)
 
-**Note**: Live SSOS had CO₂ storage=0, O₂=26.7 kg, so the **OGS path** fired. This was not the mock-expected CO₂≥1500 → ARS path.
+**Note**: Live SSOS had CO₂ storage=0, O₂=26.7 g, so the **OGS path** fired. This was not the mock-expected CO₂≥1500 → ARS path.
 
 Artifacts: `labeled_rule_base_ros2_summary.json`, `labeled_rule_base_ros2_events.jsonl`
 

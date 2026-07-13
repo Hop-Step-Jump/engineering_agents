@@ -80,10 +80,14 @@ class ServiceResult:
 
 @dataclass
 class EclssTelemetrySnapshot:
-    """Latest ECLSS storage/diagnostic readings from SSOS topics."""
+    """Latest ECLSS storage/diagnostic readings from SSOS topics.
 
-    co2_storage_kg: Optional[float] = None
-    o2_storage_kg: Optional[float] = None
+    CO₂ / O₂ storage values are grams, matching SSOS plant parameters
+    (e.g. ``max_co2_storage``, ``max_o2_capacity`` documented in grams).
+    """
+
+    co2_storage_g: Optional[float] = None
+    o2_storage_g: Optional[float] = None
     product_water_reserve_l: Optional[float] = None
     grey_water_collected_l: Optional[float] = None
     ars_failure_enabled: Optional[bool] = None
