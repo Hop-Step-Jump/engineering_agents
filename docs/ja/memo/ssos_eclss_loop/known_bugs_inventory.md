@@ -27,8 +27,9 @@
 | L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium | open |
 | M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low | open |
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
+| O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | **fixed** |
 
-推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N**
+推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O**
 
 ---
 
@@ -165,6 +166,15 @@ health は critical を評価、labeled は `co2_storage_high_g` のみ。
 
 - `sabatier_temp` を **(K)** と記載していたが、デフォルト **300.0** は 300 K（≈27°C）では触媒温度として非現実。同文書の ARS/WRS 限界は °C。**°C** に訂正（値は変更なし）。
 - `electrolysis_temp`（100.0）は単位なし → **°C** を明記。
+
+---
+
+## O — E2E README の O₂ 生成量単位誤記
+
+**状態**: **fixed**（2026-07-13）  
+**主なファイル**: `docs/*/memo/ssos_eclss_loop/e2e_records/README.md`
+
+ros2 E2E 記録で `total_o2_generated: ~8.9 **kg**` と記載していたが、同記録の CO₂/O₂ は **g**、events 生値 ≈8.9、`input_water_mass: 10` からの量論とも **g** が整合。**g** に訂正（A と同系統の誤ラベル）。
 
 ---
 

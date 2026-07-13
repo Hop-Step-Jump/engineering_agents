@@ -24,7 +24,7 @@ MkDocs サイトの全ページ一覧です。ヘッダーの言語切替で Eng
 | | [SSOS EPS ROS2 プラン](memo/ssos_eclss_loop/ssos_eps_ros2_connection_plan.md) | EPS（Phase 3） |
 | | [ROS2 グラフ設計調査](memo/ssos_eclss_loop/ssos_ros2_graph_design_investigation.md) | launch remap |
 | | [ECLSS 物理現象](memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md) | ECLSS 物理メモ |
-| | [ECLSS 既知バグ一覧](memo/ssos_eclss_loop/known_bugs_inventory.md) | 単位・力学・閉ループ（A–N） |
+| | [ECLSS 既知バグ一覧](memo/ssos_eclss_loop/known_bugs_inventory.md) | 単位・力学・閉ループ（A–O） |
 | | [EPS 物理現象](memo/ssos_eclss_loop/ssos_eps_physical_phenomena_overview.md) | EPS 物理メモ |
 | | [CLI v3 プラン](memo/cli_v3_plan.md) | SSOS ホスト 1 コマンド |
 | | [Persona LLM OOP](memo/agents/persona_llm_core_oop_plan.md) | Persona 設計草案 |
