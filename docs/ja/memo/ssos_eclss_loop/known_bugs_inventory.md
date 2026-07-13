@@ -28,8 +28,9 @@
 | M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low | open |
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
 | O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | **fixed** |
+| P | 文書 | `ssos/api-reference.md` のソースパスがパッケージ再配置後のまま陳腐 | Low | **fixed** |
 
-推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O**
+推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P**
 
 ---
 
@@ -175,6 +176,15 @@ health は critical を評価、labeled は `co2_storage_high_g` のみ。
 **主なファイル**: `docs/*/memo/ssos_eclss_loop/e2e_records/README.md`
 
 ros2 E2E 記録で `total_o2_generated: ~8.9 **kg**` と記載していたが、同記録の CO₂/O₂ は **g**、events 生値 ≈8.9、`input_water_mass: 10` からの量論とも **g** が整合。**g** に訂正（A と同系統の誤ラベル）。
+
+---
+
+## P — api-reference のソースパス陳腐化
+
+**状態**: **fixed**（2026-07-13）  
+**主なファイル**: `docs/*/ssos/api-reference.md`
+
+`environment/ssos/` フラット配置時代のパス（`eclss_backend.py`、`eclss_types.py`、`mock_eclss_backend` import 等）が残存。現行の `ssos/eclss/`・`scrubber/eps/`・`scenario/ssos_eclss_loop/` レイアウトとインポート例に更新。
 
 ---
 
