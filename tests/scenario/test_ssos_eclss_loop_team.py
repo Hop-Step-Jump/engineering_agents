@@ -149,6 +149,17 @@ def test_loop_mock_request_o2_withdraws_plant_storage():
     assert backend.poll_telemetry().o2_storage_g == pytest.approx(75.0)
 
 
+def test_loop_mock_request_co2_withdraws_plant_storage():
+    backend = LoopMockEclssBackend(
+        {
+            "simulation": {"initial_co2_storage_g": 100.0},
+            "mock_dynamics": {},
+        }
+    )
+    backend.request_co2(25.0)
+    assert backend.poll_telemetry().co2_storage_g == pytest.approx(75.0)
+
+
 def test_llm_operational_parse_air_revitalisation_and_request_co2():
     team = SsosEclssLoopTeam({"mode": "llm", "team": {"count": 1, "id_prefix": "op"}, "llm": {}})
     cmd, note = team._parse_llm_operational_command(
