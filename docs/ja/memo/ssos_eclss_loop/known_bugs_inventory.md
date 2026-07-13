@@ -29,8 +29,9 @@
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
 | O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | **fixed** |
 | P | 文書 | `ssos/api-reference.md` のソースパスがパッケージ再配置後のまま陳腐 | Low | **fixed** |
+| Q | 文書 | 現象 overview §10 が WRS/OGS「未接続 / `SsosAdapter`」のまま | Low | **fixed** |
 
-推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P**
+推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
 
 ---
 
@@ -185,6 +186,15 @@ ros2 E2E 記録で `total_o2_generated: ~8.9 **kg**` と記載していたが、
 **主なファイル**: `docs/*/ssos/api-reference.md`
 
 `environment/ssos/` フラット配置時代のパス（`eclss_backend.py`、`eclss_types.py`、`mock_eclss_backend` import 等）が残存。現行の `ssos/eclss/`・`scrubber/eps/`・`scenario/ssos_eclss_loop/` レイアウトとインポート例に更新。
+
+---
+
+## Q — 現象 overview §10 の WRS/OGS「未接続」誤記
+
+**状態**: **fixed**（2026-07-13）  
+**主なファイル**: `docs/*/memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md`
+
+§10 対応表が WRS/OGS を「未接続（将来 `SsosAdapter`…）」としていたが、`ssos_eclss_loop` では `MockEclssBackend` / `Ros2EclssBridge` で接続済み。ARS 行も scrubber と loop の役割分担を明記するよう更新。
 
 ---
 
