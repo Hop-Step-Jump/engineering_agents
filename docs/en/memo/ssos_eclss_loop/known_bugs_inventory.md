@@ -28,8 +28,12 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | K | Loop | Scrubber design proposals not re-injected (known) | High | open (known) |
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
 | M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
+| N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | open |
+| O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | open |
+| P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | open |
+| Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | open |
 
-Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K**
+Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
 
 ---
 
@@ -132,6 +136,43 @@ Dashboard Before/After is preview only.
 
 **Status**: open  
 Health 800/1200; plot `axhline(1000)` (policy recovery only).
+
+---
+
+## N — OGS temperature unit mislabel / missing unit
+
+**Status**: open  
+**Files**: `docs/*/memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md`
+
+- `sabatier_temp` labeled **(K)** with default **300.0** (≈27°C if Kelvin — unrealistic for Sabatier). ARS/WRS limits in the same memo use °C → should be **°C**.
+- `electrolysis_temp` (100.0) has no unit → annotate **°C**.
+
+---
+
+## O — E2E README O₂ generation unit typo
+
+**Status**: open  
+**Files**: `docs/*/memo/ssos_eclss_loop/e2e_records/README.md`
+
+Says `total_o2_generated: ~8.9 **kg**`, but the same record uses **g** for CO₂/O₂ storage, events ≈8.9, and stoichiometry from `input_water_mass: 10` matches **g** (same mislabel family as A).
+
+---
+
+## P — Stale api-reference source paths
+
+**Status**: open  
+**Files**: `docs/*/ssos/api-reference.md`
+
+Paths from the flat `environment/ssos/` layout (`eclss_backend.py`, `eclss_types.py`, `mock_eclss_backend` imports, etc.) remain. Current layout is `ssos/eclss/`, `scrubber/eps/`, `scenario/ssos_eclss_loop/`.
+
+---
+
+## Q — Phenomena overview §10 WRS/OGS “not connected” typo
+
+**Status**: open  
+**Files**: `docs/*/memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md`
+
+§10 mapping says WRS/OGS are “not connected (future `SsosAdapter`…)”, but `ssos_eclss_loop` already connects them via `MockEclssBackend` / `Ros2EclssBridge`.
 
 ---
 
