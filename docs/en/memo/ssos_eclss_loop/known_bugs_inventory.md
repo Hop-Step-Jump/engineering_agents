@@ -30,7 +30,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
 | N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | **fixed** |
 | O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | **fixed** |
-| P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | open |
+| P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | **fixed** |
 | Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | open |
 
 Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
@@ -160,10 +160,10 @@ ros2 E2E note said `total_o2_generated: ~8.9 **kg**`, but the same record uses *
 
 ## P — Stale api-reference source paths
 
-**Status**: open  
+**Status**: **fixed** (2026-07-13)  
 **Files**: `docs/*/ssos/api-reference.md`
 
-Paths from the flat `environment/ssos/` layout (`eclss_backend.py`, `eclss_types.py`, `mock_eclss_backend` imports, etc.) remain. Current layout is `ssos/eclss/`, `scrubber/eps/`, `scenario/ssos_eclss_loop/`.
+Paths from the flat `environment/ssos/` layout (`eclss_backend.py`, `eclss_types.py`, `mock_eclss_backend` imports, etc.) remained. Updated to current `ssos/eclss/`, `scrubber/eps/`, and `scenario/ssos_eclss_loop/` layout plus matching import examples.
 
 ---
 

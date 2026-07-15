@@ -28,7 +28,7 @@
 | M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low | open |
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
 | O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | **fixed** |
-| P | 文書 | `ssos/api-reference.md` のソースパスがパッケージ再配置後のまま陳腐 | Low | open |
+| P | 文書 | `ssos/api-reference.md` のソースパスがパッケージ再配置後のまま陳腐 | Low | **fixed** |
 | Q | 文書 | 現象 overview §10 が WRS/OGS「未接続 / `SsosAdapter`」のまま | Low | open |
 
 推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
@@ -182,10 +182,10 @@ ros2 E2E 記録で `total_o2_generated: ~8.9 **kg**` と記載していたが、
 
 ## P — api-reference のソースパス陳腐化
 
-**状態**: open  
+**状態**: **fixed**（2026-07-13）  
 **主なファイル**: `docs/*/ssos/api-reference.md`
 
-`environment/ssos/` フラット配置時代のパス（`eclss_backend.py`、`eclss_types.py`、`mock_eclss_backend` import 等）が残存。現行は `ssos/eclss/`・`scrubber/eps/`・`scenario/ssos_eclss_loop/`。
+`environment/ssos/` フラット配置時代のパス（`eclss_backend.py`、`eclss_types.py`、`mock_eclss_backend` import 等）が残存。現行の `ssos/eclss/`・`scrubber/eps/`・`scenario/ssos_eclss_loop/` レイアウトとインポート例に更新。
 
 ---
 
