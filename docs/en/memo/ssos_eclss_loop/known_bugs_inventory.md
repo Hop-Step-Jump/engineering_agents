@@ -27,12 +27,11 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | J | Agents | `co2_critical` in health only; unused by labeled | Medium | open |
 | K | Loop | Scrubber design proposals not re-injected (known) | High | open (known) |
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
-| M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
+| M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | **fixed** |
 | N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | open |
 | O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | open |
 | P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | open |
 | Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | open |
-
 Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
 
 ---
@@ -134,8 +133,8 @@ Dashboard Before/After is preview only.
 
 ## M — Dashboard CO₂ reference line
 
-**Status**: open  
-Health 800/1200; plot `axhline(1000)` (policy recovery only).
+**Status**: **fixed** (2026-07-13)  
+Plot draws health bands from `CO2_SAFE_PPM` / `CO2_WARNING_PPM` with legend; policy recovery (1000) kept as a distinct dotted line.
 
 ---
 
