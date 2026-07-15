@@ -55,7 +55,7 @@ def run(
     apply_proposals: Optional[Path] = typer.Option(
         None,
         "--apply-proposals",
-        help="Apply design_proposals.json before running (ssos_eclss_loop).",
+        help="Apply design_proposals.json before running (scrubber_degradation or ssos_eclss_loop).",
     ),
     seed: Optional[int] = typer.Option(None, "--seed", help="Record a reproducibility seed."),
     set_values: List[str] = typer.Option(

@@ -82,9 +82,20 @@ def _deep_merge(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, An
 
 
 def build_eclss(config: Dict[str, Any]) -> MockEclssSimulator:
+    from environment.scrubber.eclss_ops.design_state import default_parameters
+    from scenario.scrubber_degradation.design_proposals import topology_from_dict
+
     sim_cfg = config.get("simulation", {})
     design_params = config.get("design_parameters")
-    design = DesignStateManager(parameters=design_params) if design_params else DesignStateManager()
+    topo_data = config.get("design_topology")
+    if topo_data is not None or design_params is not None:
+        params = dict(default_parameters())
+        if design_params:
+            params.update({key: float(value) for key, value in design_params.items()})
+        topology = topology_from_dict(topo_data) if topo_data else None
+        design = DesignStateManager(topology=topology, parameters=params)
+    else:
+        design = DesignStateManager()
 
     eclss = MockEclssSimulator(
         initial_co2_ppm=float(sim_cfg.get("initial_co2_ppm", 800.0)),
