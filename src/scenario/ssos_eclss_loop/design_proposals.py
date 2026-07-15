@@ -31,12 +31,12 @@ ACTION_PROFILE_FIELDS_BY_SUBSYSTEM = {
 
 ALLOWED_SET_PARAMETER_TARGETS = frozenset(
     {
-        "agents.policy.co2_storage_high_kg",
-        "agents.policy.o2_storage_low_kg",
+        "agents.policy.co2_storage_high_g",
+        "agents.policy.o2_storage_low_g",
         "agents.policy.product_water_low_l",
-        "thresholds.co2_storage_high_kg",
-        "thresholds.co2_storage_critical_kg",
-        "thresholds.o2_storage_low_kg",
+        "thresholds.co2_storage_high_g",
+        "thresholds.co2_storage_critical_g",
+        "thresholds.o2_storage_low_g",
         "thresholds.product_water_low_l",
     }
 )
@@ -243,7 +243,7 @@ def build_design_proposals_from_run(
             }
         )
 
-    for key in ("co2_storage_high_kg", "o2_storage_low_kg", "product_water_low_l"):
+    for key in ("co2_storage_high_g", "o2_storage_low_g", "product_water_low_l"):
         if key in policy:
             value = float(policy[key])
             changes.append(

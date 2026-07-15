@@ -23,8 +23,8 @@ class MockEclssBackend:
 
     def __init__(self) -> None:
         self._telemetry = EclssTelemetrySnapshot(
-            co2_storage_kg=1800.0,
-            o2_storage_kg=500.0,
+            co2_storage_g=1800.0,
+            o2_storage_g=500.0,
             product_water_reserve_l=100.0,
         )
         self._grey_water_buffer_l = 0.0
@@ -39,8 +39,8 @@ class MockEclssBackend:
 
     def poll_telemetry(self) -> EclssTelemetrySnapshot:
         return EclssTelemetrySnapshot(
-            co2_storage_kg=self._telemetry.co2_storage_kg,
-            o2_storage_kg=self._telemetry.o2_storage_kg,
+            co2_storage_g=self._telemetry.co2_storage_g,
+            o2_storage_g=self._telemetry.o2_storage_g,
             product_water_reserve_l=self._telemetry.product_water_reserve_l,
             grey_water_collected_l=self._grey_water_buffer_l,
             ars_failure_enabled=self._failure_flags["ars"],

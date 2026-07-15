@@ -46,7 +46,7 @@ def test_run_1b_smoke_passes_when_co2_storage_empty(monkeypatch):
 
         def poll_telemetry(self):
             self._step += 1
-            snap = EclssTelemetrySnapshot(co2_storage_kg=0.0, o2_storage_kg=8.9)
+            snap = EclssTelemetrySnapshot(co2_storage_g=0.0, o2_storage_g=8.9)
             if self._step > 1:
                 return snap
             return snap
@@ -85,8 +85,8 @@ def test_run_1b_smoke_detects_sabatier_signal(monkeypatch):
         def poll_telemetry(self):
             self._step += 1
             if self._step == 1:
-                return EclssTelemetrySnapshot(co2_storage_kg=100.0, o2_storage_kg=0.0)
-            return EclssTelemetrySnapshot(co2_storage_kg=90.0, o2_storage_kg=5.0)
+                return EclssTelemetrySnapshot(co2_storage_g=100.0, o2_storage_g=0.0)
+            return EclssTelemetrySnapshot(co2_storage_g=90.0, o2_storage_g=5.0)
 
         def request_co2(self, amount: float):
             from environment.ssos.eclss.types import ServiceResult

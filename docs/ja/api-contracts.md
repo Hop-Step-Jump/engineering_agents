@@ -9,7 +9,7 @@
 | 叙事 | [scenario-scrubber-degradation.md](scenario-scrubber-degradation.md) | [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md) |
 | バックエンド | `SimulatorProtocol` | `EclssBackend` |
 | チーム | `ScrubberDegradationTeam` | `SsosEclssLoopTeam` |
-| テレメトリ | CO₂ ppm、電力マージン | CO₂/O₂/水ストレージ（kg / L） |
+| テレメトリ | CO₂ ppm、電力マージン | CO₂/O₂/水ストレージ（g / L） |
 | ランタイム | `RecoveryCommand` | `EclssOperationalCommand` |
 | イベント | `recovery_applied` | `operational_applied` |
 | 事後提案 | scrubber トポロジ（`add_edge` 等） | `design_domain: ssos_graph` |
@@ -364,8 +364,8 @@ backend 選択: `scenario.yaml` の `backend.kind`、環境変数 `SSOS_ECLSS_BA
 ```json
 {
   "step": 3,
-  "co2_storage_kg": 1680.0,
-  "o2_storage_kg": 465.0,
+  "co2_storage_g": 1680.0,
+  "o2_storage_g": 465.0,
   "product_water_reserve_l": 100.0,
   "ars_failure_enabled": false
 }
@@ -373,8 +373,8 @@ backend 選択: `scenario.yaml` の `backend.kind`、環境変数 `SSOS_ECLSS_BA
 
 | フィールド | ROS2 トピック |
 | --- | --- |
-| `co2_storage_kg` | `/co2_storage` |
-| `o2_storage_kg` | `/o2_storage` |
+| `co2_storage_g` | `/co2_storage` |
+| `o2_storage_g` | `/o2_storage` |
 | `product_water_reserve_l` | `/wrs/product_water_reserve` |
 
 ### EclssOperationalCommand — ランタイム
@@ -408,11 +408,11 @@ backend 選択: `scenario.yaml` の `backend.kind`、環境変数 `SSOS_ECLSS_BA
 
 | 指標 | safe | warning | critical |
 | --- | --- | --- | --- |
-| CO₂ ストレージ (kg) | < 1500（high） | 1500 〜 2200 未満 | ≥ 2200 |
-| O₂ ストレージ (kg) | > 450（low） | 337.5 〜 450 | ≤ 337.5 |
+| CO₂ ストレージ (g) | < 1500（high） | 1500 〜 2200 未満 | ≥ 2200 |
+| O₂ ストレージ (g) | > 450（low） | 337.5 〜 450 | ≤ 337.5 |
 | 製品水 (L) | > 50（low） | 25 〜 50 | ≤ 25 |
 
-`thresholds.co2_storage_high_kg` 等は**運用トリガー**。ヘルス区分とは別概念。
+`thresholds.co2_storage_high_g` 等は**運用トリガー**。ヘルス区分とは別概念。
 
 ### design_proposals.json — `design_domain: ssos_graph`
 
@@ -498,9 +498,9 @@ backend 選択: `scenario.yaml` の `backend.kind`、環境変数 `SSOS_ECLSS_BA
   "backend": "ros2",
   "agents_mode": "labeled_rule_base",
   "steps": 8,
-  "peak_co2_storage_kg": 1680.0,
-  "final_co2_storage_kg": 1330.0,
-  "final_o2_storage_kg": 465.0,
+  "peak_co2_storage_g": 1680.0,
+  "final_co2_storage_g": 1330.0,
+  "final_o2_storage_g": 465.0,
   "operational_command_count": 3,
   "ogs_invoked_step": 2,
   "final_health": {"co2_status": "safe", "o2_status": "warning", "overall": "warning"},
@@ -509,7 +509,7 @@ backend 選択: `scenario.yaml` の `backend.kind`、環境変数 `SSOS_ECLSS_BA
 }
 ```
 
-**scrubber に無いフィールド**: `backend`、`peak_co2_storage_kg`、`operational_command_count` 等。  
+**scrubber に無いフィールド**: `backend`、`peak_co2_storage_g`、`operational_command_count` 等。  
 **ssos に無いフィールド**: `co2_ppm`、`eps_boost_applied_step`、`eps_telemetry.jsonl` 全体。
 
 ### ROS2 トピック（SSOS 実 ECLSS）

@@ -32,13 +32,13 @@ from environment.ssos.eclss.ros2.bridge import Ros2EclssBridge
 
 def _expected_insufficient_co2(
     result: ServiceResult,
-    co2_storage_kg: Optional[float],
-    requested_kg: float,
+    co2_storage_g: Optional[float],
+    requested_g: float,
 ) -> bool:
     """Headless SSOS often starts with /co2_storage=0; service rejection is valid."""
-    if result.success or co2_storage_kg is None:
+    if result.success or co2_storage_g is None:
         return False
-    if co2_storage_kg >= requested_kg:
+    if co2_storage_g >= requested_g:
         return False
     message = (result.message or "").lower()
     return "insufficient" in message and "co" in message
@@ -86,16 +86,16 @@ def run_1b_smoke(
     before = bridge.poll_telemetry()
     report.telemetry_before = before.to_dict()
 
-    if before.co2_storage_kg is None:
+    if before.co2_storage_g is None:
         report.errors.append(f"missing telemetry from {TOPIC_CO2_STORAGE}")
-    if before.o2_storage_kg is None:
+    if before.o2_storage_g is None:
         report.errors.append(f"missing telemetry from {TOPIC_O2_STORAGE}")
 
     co2_result = bridge.request_co2(request_co2_amount)
     report.request_co2 = co2_result.to_dict()
     report.request_co2_expected_insufficient = _expected_insufficient_co2(
         co2_result,
-        before.co2_storage_kg,
+        before.co2_storage_g,
         request_co2_amount,
     )
     if report.request_co2_expected_insufficient:
@@ -111,10 +111,10 @@ def run_1b_smoke(
     after = bridge.poll_telemetry()
     report.telemetry_after = after.to_dict()
 
-    if before.co2_storage_kg is not None and after.co2_storage_kg is not None:
-        report.co2_storage_delta = after.co2_storage_kg - before.co2_storage_kg
-    if before.o2_storage_kg is not None and after.o2_storage_kg is not None:
-        report.o2_storage_delta = after.o2_storage_kg - before.o2_storage_kg
+    if before.co2_storage_g is not None and after.co2_storage_g is not None:
+        report.co2_storage_delta = after.co2_storage_g - before.co2_storage_g
+    if before.o2_storage_g is not None and after.o2_storage_g is not None:
+        report.o2_storage_delta = after.o2_storage_g - before.o2_storage_g
 
     ch4_vented = (ogs_result.details or {}).get("total_ch4_vented")
     o2_generated = (ogs_result.details or {}).get("total_o2_generated")
@@ -162,9 +162,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 1
 
     if report.request_co2_expected_insufficient:
-        co2 = (report.telemetry_before or {}).get("co2_storage_kg")
+        co2 = (report.telemetry_before or {}).get("co2_storage_g")
         print(
-            f"\nPhase 1b smoke PASSED (request_co2 rejected as expected: CO₂ storage={co2} kg).",
+            f"\nPhase 1b smoke PASSED (request_co2 rejected as expected: CO₂ storage={co2} g).",
             file=sys.stderr,
         )
     else:

@@ -10,7 +10,7 @@ This repository has **two independent tracks**. Backend, telemetry, runtime comm
 | Narrative | [scenario-scrubber-degradation.md](scenario-scrubber-degradation.md) | [scenario-ssos-eclss-loop.md](scenario-ssos-eclss-loop.md) |
 | Backend | `SimulatorProtocol` | `EclssBackend` |
 | Team | `ScrubberDegradationTeam` | `SsosEclssLoopTeam` |
-| Telemetry | CO₂ ppm, power margin | CO₂/O₂/water storage (kg / L) |
+| Telemetry | CO₂ ppm, power margin | CO₂/O₂/water storage (g / L) |
 | Runtime | `RecoveryCommand` | `EclssOperationalCommand` |
 | Events | `recovery_applied` | `operational_applied` |
 | Post-run | scrubber topology (`add_edge`, etc.) | `design_domain: ssos_graph` |
@@ -367,8 +367,8 @@ Implementation: `environment/ssos/eclss_backend.py`, `ros2_eclss_bridge.py`, `gr
 ```json
 {
   "step": 3,
-  "co2_storage_kg": 1680.0,
-  "o2_storage_kg": 465.0,
+  "co2_storage_g": 1680.0,
+  "o2_storage_g": 465.0,
   "product_water_reserve_l": 100.0,
   "ars_failure_enabled": false
 }
@@ -376,8 +376,8 @@ Implementation: `environment/ssos/eclss_backend.py`, `ros2_eclss_bridge.py`, `gr
 
 | Field | ROS2 topic |
 | --- | --- |
-| `co2_storage_kg` | `/co2_storage` |
-| `o2_storage_kg` | `/o2_storage` |
+| `co2_storage_g` | `/co2_storage` |
+| `o2_storage_g` | `/o2_storage` |
 | `product_water_reserve_l` | `/wrs/product_water_reserve` |
 
 ### EclssOperationalCommand — runtime
@@ -411,11 +411,11 @@ Thresholds from `scenario.yaml` `thresholds`.
 
 | Metric | safe | warning | critical |
 | --- | --- | --- | --- |
-| CO₂ storage (kg) | < 1500 (high) | 1500 to < 2200 | ≥ 2200 |
-| O₂ storage (kg) | > 450 (low) | 337.5 to 450 | ≤ 337.5 |
+| CO₂ storage (g) | < 1500 (high) | 1500 to < 2200 | ≥ 2200 |
+| O₂ storage (g) | > 450 (low) | 337.5 to 450 | ≤ 337.5 |
 | Product water (L) | > 50 (low) | 25 to 50 | ≤ 25 |
 
-`thresholds.co2_storage_high_kg`, etc. are **operational triggers**, separate from health bands.
+`thresholds.co2_storage_high_g`, etc. are **operational triggers**, separate from health bands.
 
 ### design_proposals.json — `design_domain: ssos_graph`
 
@@ -501,9 +501,9 @@ Every step, **before** agent action. Snapshot of `ssos_graph` (includes `rewires
   "backend": "ros2",
   "agents_mode": "labeled_rule_base",
   "steps": 8,
-  "peak_co2_storage_kg": 1680.0,
-  "final_co2_storage_kg": 1330.0,
-  "final_o2_storage_kg": 465.0,
+  "peak_co2_storage_g": 1680.0,
+  "final_co2_storage_g": 1330.0,
+  "final_o2_storage_g": 465.0,
   "operational_command_count": 3,
   "ogs_invoked_step": 2,
   "final_health": {"co2_status": "safe", "o2_status": "warning", "overall": "warning"},
@@ -512,7 +512,7 @@ Every step, **before** agent action. Snapshot of `ssos_graph` (includes `rewires
 }
 ```
 
-**Fields not in scrubber**: `backend`, `peak_co2_storage_kg`, `operational_command_count`, etc.  
+**Fields not in scrubber**: `backend`, `peak_co2_storage_g`, `operational_command_count`, etc.  
 **Fields not in ssos**: `co2_ppm`, `eps_boost_applied_step`, entire `eps_telemetry.jsonl`.
 
 ### ROS2 topics (SSOS live ECLSS)
