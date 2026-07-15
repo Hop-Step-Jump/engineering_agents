@@ -11,27 +11,36 @@
 
 ## 進捗サマリ
 
-| ID | 種別 | 概要 | 深刻度 | 状態 |
-| --- | --- | --- | --- | --- |
-| A | 単位 | プラント **g** vs EA 誤ラベル **kg**（数値は g スケール） | Critical | **fixed** |
-| B | 単位 | `input_water_mass` を L タンクから無変換減算 | High | open |
-| C | 単位 | Goal/Service 引数の単位未定義・文書矛盾 | High | open |
-| D | 文書 | 製品水を質量単位と誤記（正は L） | Low | **fixed** |
-| E | 力学 | `request_co2` が貯蔵を増やす（取り出しと逆） | Critical | **fixed** |
-| F | 力学 | OGS 水消費がループ用 `_water` に未反映 | High | open |
-| G | 力学 | ARS/OGS が goal を無視し固定オフセット | High | open |
-| H | 設定 | mock 初期値（CO₂/O₂）の三者不一致 | Low | open |
-| I | エージェント | 失敗でも `operational_applied` → 再試行なし | Medium | **fixed** |
-| J | エージェント | `co2_critical` は health のみ、labeled 未使用 | Medium | open |
-| K | 閉ループ | scrubber 設計提案の次ラン再注入なし（既知） | High | **fixed** |
-| L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium | open |
-| M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low | open |
-| N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
-| O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | **fixed** |
-| P | 文書 | `ssos/api-reference.md` のソースパスがパッケージ再配置後のまま陳腐 | Low | **fixed** |
-| Q | 文書 | 現象 overview §10 が WRS/OGS「未接続 / `SsosAdapter`」のまま | Low | **fixed** |
+**反映済み** 10 件 / **未反映** 7 件（合計 A–Q）。
 
-推奨着手順（案）: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
+### 反映済み（fixed）
+
+| ID | 種別 | 概要 | 深刻度 |
+| --- | --- | --- | --- |
+| A | 単位 | プラント **g** vs EA 誤ラベル **kg**（数値は g スケール） | Critical |
+| D | 文書 | 製品水を質量単位と誤記（正は L） | Low |
+| E | 力学 | `request_co2` が貯蔵を増やす（取り出しと逆） | Critical |
+| I | エージェント | 失敗でも `operational_applied` → 再試行なし | Medium |
+| K | 閉ループ | scrubber 設計提案の次ラン再注入なし（既知） | High |
+| M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low |
+| N | 文書 | OGS `sabatier_temp` を (K) と誤記；`electrolysis_temp` 単位欠落 | Low |
+| O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low |
+| P | 文書 | `ssos/api-reference.md` のソースパス陳腐 | Low |
+| Q | 文書 | 現象 overview §10 が WRS/OGS「未接続 / `SsosAdapter`」のまま | Low |
+
+### 未反映（open）
+
+| ID | 種別 | 概要 | 深刻度 |
+| --- | --- | --- | --- |
+| B | 単位 | `input_water_mass` を L タンクから無変換減算 | High |
+| C | 単位 | Goal/Service 引数の単位未定義・文書矛盾 | High |
+| F | 力学 | OGS 水消費がループ用 `_water` に未反映 | High |
+| G | 力学 | ARS/OGS が goal を無視し固定オフセット | High |
+| H | 設定 | mock 初期値（CO₂/O₂）の三者不一致 | Low |
+| J | エージェント | `co2_critical` は health のみ、labeled 未使用 | Medium |
+| L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium |
+
+未反映の推奨着手順（案）: **F → B → G → C → J → H → L**
 
 ---
 
@@ -154,10 +163,10 @@ health は critical を評価、labeled は `co2_storage_high_g` のみ。
 
 ## M — ダッシュボード CO₂ 基準線
 
-**状態**: open  
-**主なファイル**: `src/tools/dashboard/app.py`、`eclss_ops/telemetry.py`
+**状態**: **fixed**（2026-07-13）  
+**主なファイル**: `src/tools/dashboard/app.py`
 
-ヘルス: safe &lt; 800 / critical ≥ 1200。プロット: `axhline(1000)`（policy recovery のみ）。
+ヘルス帯（`CO2_SAFE_PPM` 800 / `CO2_WARNING_PPM` 1200）を基準線＋凡例で描画。policy recovery（1000）は点線で区別して残す。
 
 ---
 

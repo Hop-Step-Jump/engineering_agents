@@ -13,27 +13,36 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 
 ## Progress summary
 
-| ID | Kind | Summary | Severity | Status |
-| --- | --- | --- | --- | --- |
-| A | Units | Plant **g** vs EA mislabel **kg** (values already gram-scale) | Critical | **fixed** |
-| B | Units | `input_water_mass` subtracted from L tank without conversion | High | open |
-| C | Units | Goal/Service argument units undefined / doc conflict | High | open |
-| D | Docs | Product water mislabeled as mass unit (should be L) | Low | **fixed** |
-| E | Dynamics | `request_co2` **increases** storage (should withdraw) | Critical | **fixed** |
-| F | Dynamics | OGS water use not reflected in loop `_water` | High | open |
-| G | Dynamics | ARS/OGS ignore goals; fixed offsets only | High | open |
-| H | Config | Mock initial CO₂/O₂ disagree across three sources | Low | open |
-| I | Agents | Failures still recorded as `operational_applied` | Medium | **fixed** |
-| J | Agents | `co2_critical` in health only; unused by labeled | Medium | open |
-| K | Loop | Scrubber design proposals not re-injected (known) | High | **fixed** |
-| L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
-| M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
-| N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | **fixed** |
-| O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | **fixed** |
-| P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | **fixed** |
-| Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | **fixed** |
+**Landed (fixed)**: 10 · **Not yet landed (open)**: 7 · Total A–Q.
 
-Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
+### Landed (fixed)
+
+| ID | Kind | Summary | Severity |
+| --- | --- | --- | --- |
+| A | Units | Plant **g** vs EA mislabel **kg** (values already gram-scale) | Critical |
+| D | Docs | Product water mislabeled as mass unit (should be L) | Low |
+| E | Dynamics | `request_co2` **increases** storage (should withdraw) | Critical |
+| I | Agents | Failures still recorded as `operational_applied` | Medium |
+| K | Loop | Scrubber design proposals not re-injected (known) | High |
+| M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low |
+| N | Docs | OGS `sabatier_temp` mislabeled (K); `electrolysis_temp` unit missing | Low |
+| O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low |
+| P | Docs | Stale source paths in `ssos/api-reference.md` | Low |
+| Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low |
+
+### Not yet landed (open)
+
+| ID | Kind | Summary | Severity |
+| --- | --- | --- | --- |
+| B | Units | `input_water_mass` subtracted from L tank without conversion | High |
+| C | Units | Goal/Service argument units undefined / doc conflict | High |
+| F | Dynamics | OGS water use not reflected in loop `_water` | High |
+| G | Dynamics | ARS/OGS ignore goals; fixed offsets only | High |
+| H | Config | Mock initial CO₂/O₂ disagree across three sources | Low |
+| J | Agents | `co2_critical` in health only; unused by labeled | Medium |
+| L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium |
+
+Suggested order for remaining opens: **F → B → G → C → J → H → L**
 
 ---
 
@@ -134,8 +143,10 @@ Health evaluates critical; labeled uses `co2_storage_high_g` only.
 
 ## M — Dashboard CO₂ reference line
 
-**Status**: open  
-Health 800/1200; plot `axhline(1000)` (policy recovery only).
+**Status**: **fixed** (2026-07-13)  
+**Files**: `src/tools/dashboard/app.py`
+
+Plot draws health bands from `CO2_SAFE_PPM` / `CO2_WARNING_PPM` with legend; policy recovery (1000) kept as a distinct dotted line.
 
 ---
 
