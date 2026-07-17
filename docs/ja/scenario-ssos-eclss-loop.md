@@ -1,6 +1,6 @@
 # シナリオ: ssos_eclss_loop
 
-**SSOS**（Space Station OS）Docker 内の実 ROS2 **ECLSS**（Environmental Control and Life Support System）を、エージェントチームが Crew Simulation の代わりに操作する参照シナリオ。CO₂ / O₂（**g**）と製品水（**L**）を監視し、閾値超過時に ARS / OGS 等の運用コマンドを打ち、ラン終了後に `ssos_graph` ドメインの恒久設計を提案する。
+**SSOS**（Space Station OS）Docker 内の実 ROS2 **ECLSS**（Environmental Control and Life Support System）を、エージェントチームが Crew Simulation の代わりに操作する参照シナリオ。CO₂ / O₂ / 製品水の**ストレージ g** を監視し、閾値超過時に ARS / OGS 等の運用コマンドを打ち、ラン終了後に `ssos_graph` ドメインの恒久設計を提案する。
 
 > 実行コマンドは [概要](overview.md#実行方法) および本ドキュメント [実行方法](#実行方法)。アーキテクチャは [architecture.md](architecture.md)。scrubber との対比は [scenario-scrubber-degradation.md](scenario-scrubber-degradation.md)。
 
@@ -336,7 +336,7 @@ python -m scenario.ssos_eclss_loop.scenario_run --mock --agents-mode llm \
 
 `summary.scenario == "ssos_eclss_loop"` の run は `src/tools/dashboard/ssos_views.py` に分岐。
 
-1. **Overview** — CO₂ / O₂（g）/ 製品水（L）のプロット、ヘルスカード、2 run 比較
+1. **Overview** — CO₂ / O₂ / 水ストレージ g のプロット、ヘルスカード、2 run 比較
 2. **Step replay** — `operational_applied` タイムライン、発言・reasoning、ストレージプロット
 3. **設計提案** — `ssos_graph` の `action_profile` / `graph_rewire` プレビュー
 

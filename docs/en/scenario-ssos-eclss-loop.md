@@ -1,7 +1,7 @@
 
 # Scenario: ssos_eclss_loop
 
-Reference scenario where an **agent team** operates real ROS2 **ECLSS** (Environmental Control and Life Support System) inside **SSOS** (Space Station OS) Docker instead of Crew Simulation. The team monitors CO₂ / O₂ (**g**) and product water (**L**), issues operational commands (ARS / OGS, etc.) when thresholds are exceeded, and proposes permanent `ssos_graph` design after the run.
+Reference scenario where an **agent team** operates real ROS2 **ECLSS** (Environmental Control and Life Support System) inside **SSOS** (Space Station OS) Docker instead of Crew Simulation. The team monitors **storage g** for CO₂ / O₂ / product water, issues operational commands (ARS / OGS, etc.) when thresholds are exceeded, and proposes permanent `ssos_graph` design after the run.
 
 > Run commands: [Overview](overview.md#how-to-run) and [How to run](#how-to-run) below. Architecture: [architecture.md](architecture.md). Contrast with scrubber: [scenario-scrubber-degradation.md](scenario-scrubber-degradation.md).
 
@@ -337,7 +337,7 @@ python -m scenario.ssos_eclss_loop.scenario_run --mock --agents-mode llm \
 
 Runs with `summary.scenario == "ssos_eclss_loop"` branch to `src/tools/dashboard/ssos_views.py`.
 
-1. **Overview** — CO₂ / O₂ (g) / product water (L) plots, health cards, 2-run compare
+1. **Overview** — CO₂ / O₂ / water storage g plots, health cards, 2-run compare
 2. **Step replay** — `operational_applied` timeline, utterances / reasoning, storage plots
 3. **Design proposals** — `ssos_graph` `action_profile` / `graph_rewire` preview
 

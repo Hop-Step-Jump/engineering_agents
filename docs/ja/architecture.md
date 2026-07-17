@@ -599,7 +599,7 @@ SsosEclssLoopTeam                         # scenario/agents/ssos_eclss_loop_team
 
 `run_ssos_eclss_loop.sh` / `ea-loop` でコンテナ内実行。ECLSS headless 起動が前提。
 
-### ヘルス（ストレージ g / L）
+### ヘルス（ストレージ g）
 
 `compute_eclss_storage_health()` — `src/scenario/ssos_eclss_loop/health.py`
 
@@ -638,7 +638,7 @@ SsosEclssLoopTeam                         # scenario/agents/ssos_eclss_loop_team
 
 #### llm
 
-scrubber と同パターン。プロンプトにはストレージ（g / L）とヘルス状態（policy なし）。
+scrubber と同パターン。プロンプトにはストレージ g とヘルス状態（policy なし）。
 
 ### 出力・ダッシュボード
 
@@ -655,7 +655,7 @@ scrubber と同パターン。プロンプトにはストレージ（g / L）と
 
 | ビュー（`ssos_views.py`） | 内容                       |
 | -------------------- | ------------------------ |
-| Overview             | ストレージ g / L、ヘルスカード、2 run 比較 |
+| Overview             | ストレージ g、ヘルスカード、2 run 比較 |
 | Step replay          | 運用タイムライン、`ssos_graph` 提案 |
 
 

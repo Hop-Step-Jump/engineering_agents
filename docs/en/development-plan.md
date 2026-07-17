@@ -147,7 +147,7 @@ Details: [memo/scrubber_degradation/mvp_plan.md](memo/scrubber_degradation/mvp_p
 [ ssos_eclss_loop — Phase 0–7 complete ]
   EclssBackend (mock | ros2) → SsosEclssLoopTeam(Team)
        ↓ JSONL + design_proposals.json (ssos_graph)
-  Dashboard (storage g / L / operational timeline)
+  Dashboard (storage g / operational timeline)
   ea-loop (Docker) + graph_rewire (client remap)
 
 [ Not connected / backlog ]

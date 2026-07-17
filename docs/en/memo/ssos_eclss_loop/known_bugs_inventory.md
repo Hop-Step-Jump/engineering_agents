@@ -18,7 +18,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | A | Units | Plant **g** vs EA mislabel **kg** (values already gram-scale) | Critical | **fixed** |
 | B | Units | `input_water_mass` subtracted from L tank without conversion | High | open |
 | C | Units | Goal/Service argument units undefined / doc conflict | High | open |
-| D | Docs | Product water mislabeled as mass unit (should be L) | Low | **fixed** |
+| D | Docs | Product water mislabeled as kg (should be L) | Low | open |
 | E | Dynamics | `request_co2` **increases** storage (should withdraw) | Critical | open |
 | F | Dynamics | OGS water use not reflected in loop `_water` | High | open |
 | G | Dynamics | ARS/OGS ignore goals; fixed offsets only | High | open |
@@ -41,7 +41,7 @@ Suggested order: **A → E → F → B → G → C → I → J → H → L → M
 **Status**: **fixed** (2026-07-13)  
 **Resolution**: Canonical unit is **grams** (matches SSOS plant caps). Renamed mislabeled `*_kg` storage fields/keys/docs to `*_g`. No numeric rescale.
 
-Remaining: Goal field unit annotations → **C**.
+Remaining: Goal field unit annotations → **C**; product-water kg typo → **D**.
 
 ---
 
@@ -61,10 +61,10 @@ Plant docs: masses in **g**, iodine **2 mg/L**.
 
 ---
 
-## D — Overview product-water unit typo
+## D — Overview product-water kg typo
 
-**Status**: **fixed** (2026-07-13)  
-**Resolution**: Product water is **L** (`product_water_reserve_l`). Separated from CO₂/O₂ (**g**) in overview / scenario / architecture wording.
+**Status**: open  
+**Files**: `docs/en/overview.md`, `docs/ja/overview.md`
 
 ---
 
