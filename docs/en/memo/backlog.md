@@ -285,6 +285,7 @@ No strict sync; strengthen **observation contract**:
 **Related**: [known_bugs_inventory.md](ssos_eclss_loop/known_bugs_inventory.md)
 
 Inventory of **unit mismatches (g↔kg, °C, etc.)**, mock dynamics sign/sync bugs, and agent/closed-loop gaps for the ECLSS anomaly-response simulation (IDs A–Q).
+
 | Priority | Items | Notes |
 |----------|-------|-------|
 | P0 | **A** (**fixed**) / **E** (**fixed**) | Storage unit unified to g; `request_co2` sign corrected |

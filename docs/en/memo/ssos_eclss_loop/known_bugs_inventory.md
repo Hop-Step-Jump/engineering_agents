@@ -29,7 +29,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | L | Scrubber | Power `*_w` names vs ad-hoc 0.01/0.05 scale | Medium | open |
 | M | Scrubber | Dashboard 1000 ppm line ≠ health 800/1200 | Low | open |
 | N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | **fixed** |
-| O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | **fixed** |
+| O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | open |
 | P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | open |
 | Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | open |
 
@@ -151,10 +151,10 @@ Health 800/1200; plot `axhline(1000)` (policy recovery only).
 
 ## O — E2E README O₂ generation unit typo
 
-**Status**: **fixed** (2026-07-13)  
+**Status**: open  
 **Files**: `docs/*/memo/ssos_eclss_loop/e2e_records/README.md`
 
-ros2 E2E note said `total_o2_generated: ~8.9 **kg**`, but the same record uses **g** for CO₂/O₂ storage, the events value is ≈8.9, and stoichiometry from `input_water_mass: 10` matches **g**. Corrected to **g** (same mislabel family as A).
+Says `total_o2_generated: ~8.9 **kg**`, but the same record uses **g** for CO₂/O₂ storage, events ≈8.9, and stoichiometry from `input_water_mass: 10` matches **g** (same mislabel family as A).
 
 ---
 

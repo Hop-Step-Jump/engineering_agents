@@ -22,7 +22,7 @@ ea-loop --agents-mode labeled_rule_base --output-dir /tmp/e2e_labeled_ros2
 **events.jsonl（step 0）**:
 
 - `request_co2` — applied（SSOS: `Insufficient CO₂ in storage` — 実機 CO₂=0 g）
-- `oxygen_generation` — **SUCCEEDED**（`total_o2_generated: ~8.9 g`）
+- `oxygen_generation` — **SUCCEEDED**（`total_o2_generated: ~8.9 kg`）
 
 **注**: 実機 SSOS は CO₂ storage=0、O₂=26.7 g のため **OGS 経路**が発火。mock 想定の CO₂≥1500 → ARS 経路ではなかった。
 

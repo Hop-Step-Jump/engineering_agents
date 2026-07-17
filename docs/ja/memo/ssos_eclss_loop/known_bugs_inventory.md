@@ -27,7 +27,7 @@
 | L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium | open |
 | M | scrubber | ダッシュボード基準線 1000 ≠ ヘルス 800/1200 | Low | open |
 | N | 文書 | OGS `sabatier_temp` を (K) と誤記（値 300 は °C 相当）；`electrolysis_temp` 単位欠落 | Low | **fixed** |
-| O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | **fixed** |
+| O | 文書 | E2E README の `total_o2_generated: ~8.9 kg`（正は **g**） | Low | open |
 | P | 文書 | `ssos/api-reference.md` のソースパスがパッケージ再配置後のまま陳腐 | Low | open |
 | Q | 文書 | 現象 overview §10 が WRS/OGS「未接続 / `SsosAdapter`」のまま | Low | open |
 
@@ -173,10 +173,10 @@ health は critical を評価、labeled は `co2_storage_high_g` のみ。
 
 ## O — E2E README の O₂ 生成量単位誤記
 
-**状態**: **fixed**（2026-07-13）  
+**状態**: open  
 **主なファイル**: `docs/*/memo/ssos_eclss_loop/e2e_records/README.md`
 
-ros2 E2E 記録で `total_o2_generated: ~8.9 **kg**` と記載していたが、同記録の CO₂/O₂ は **g**、events 生値 ≈8.9、`input_water_mass: 10` からの量論とも **g** が整合。**g** に訂正（A と同系統の誤ラベル）。
+ros2 E2E 記録で `total_o2_generated: ~8.9 **kg**` と記載しているが、同記録の CO₂/O₂ は **g**、events 生値 ≈8.9、`input_water_mass: 10` からの量論とも **g** が整合（A と同系統）。
 
 ---
 
