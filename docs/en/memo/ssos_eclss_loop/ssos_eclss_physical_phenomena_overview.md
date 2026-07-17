@@ -249,8 +249,8 @@ Still reproduces ISS ECLSS **major sub-loops (air · water · oxygen) and materi
 
 | SSOS ECLSS | `engineering_agents` |
 | --- | --- |
-| ARS CO₂ removal | `scrubber_degradation`: `MockEclssSimulator` (scrubber efficiency, fan, bypass). `ssos_eclss_loop`: `EclssBackend` (ARS action / `request_co2`) |
-| WRS / OGS | **Connected** (`ssos_eclss_loop`). `MockEclssBackend` / `Ros2EclssBridge` implement OGS/WRS actions and product/grey water services (`SsosAdapter` is unused) |
+| ARS CO₂ removal | `MockEclssSimulator` (scrubber efficiency, fan, bypass) |
+| WRS / OGS | Not connected (future ROS 2 bridge via `SsosAdapter`) |
 | EPS power | `EpsStack` (SARJ + BCDU mock, or SSOS EPS connection) |
 
 Related memo: [ssos_eps_ros2_connection_plan.md](ssos_eps_ros2_connection_plan.md)

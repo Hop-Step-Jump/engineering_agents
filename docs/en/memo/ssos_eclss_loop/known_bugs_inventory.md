@@ -31,7 +31,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | N | Docs | OGS `sabatier_temp` mislabeled (K) though 300 is °C-scale; `electrolysis_temp` unit missing | Low | **fixed** |
 | O | Docs | E2E README `total_o2_generated: ~8.9 kg` (should be **g**) | Low | **fixed** |
 | P | Docs | Stale source paths in `ssos/api-reference.md` after package layout move | Low | **fixed** |
-| Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | **fixed** |
+| Q | Docs | Phenomena overview §10 still says WRS/OGS “not connected / `SsosAdapter`” | Low | open |
 
 Suggested order: **A → E → F → B → G → C → I → J → H → L → M → D → K → N → O → P → Q**
 
@@ -169,10 +169,10 @@ Paths from the flat `environment/ssos/` layout (`eclss_backend.py`, `eclss_types
 
 ## Q — Phenomena overview §10 WRS/OGS “not connected” typo
 
-**Status**: **fixed** (2026-07-13)  
+**Status**: open  
 **Files**: `docs/*/memo/ssos_eclss_loop/ssos_eclss_physical_phenomena_overview.md`
 
-§10 mapping still said WRS/OGS were “not connected (future `SsosAdapter`…)”, but `ssos_eclss_loop` already connects them via `MockEclssBackend` / `Ros2EclssBridge`. Also clarified ARS row for scrubber vs loop roles.
+§10 mapping says WRS/OGS are “not connected (future `SsosAdapter`…)”, but `ssos_eclss_loop` already connects them via `MockEclssBackend` / `Ros2EclssBridge`.
 
 ---
 
