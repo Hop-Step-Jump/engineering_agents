@@ -3,7 +3,7 @@
 Sibling packages under ``environment/``::
 
     scrubber/          scrubber_degradation — ppm mock, eclss_ops, eps mock
-    ssos/eclss/        this package — storage-g ECLSS (mock | ros2)
+    ssos/eclss/        this package — storage-kg ECLSS (mock | ros2)
     ssos/eps/ros2/     EPS ROS 2 bridge (not wired into eclss loop yet)
     ssos/ros2/cli.py   shared ``ros2`` subprocess helpers
 

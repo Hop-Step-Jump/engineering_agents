@@ -56,8 +56,8 @@ def print_run_result(result: RunResult, *, quiet: bool = False, as_json: bool = 
     if summary.get("final_co2_ppm") is not None:
         health = (summary.get("final_health") or {}).get("co2_status", "unknown")
         lines.append(f"CO2 final: {summary['final_co2_ppm']} ppm ({health})")
-    elif summary.get("final_co2_storage_g") is not None:
-        lines.append(f"CO2 storage final: {summary['final_co2_storage_g']} g")
+    elif summary.get("final_co2_storage_kg") is not None:
+        lines.append(f"CO2 storage final: {summary['final_co2_storage_kg']} kg")
     lines.append(f"view:  {DASHBOARD_CMD}")
     console.print(
         Panel(

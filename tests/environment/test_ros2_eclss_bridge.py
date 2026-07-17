@@ -43,8 +43,8 @@ def test_poll_telemetry_parses_jazzy_repr_float_topics(monkeypatch):
 
     monkeypatch.setattr("environment.ssos.ros2.cli.subprocess.run", fake_run)
     snap = Ros2EclssBridge().poll_telemetry()
-    assert snap.co2_storage_g == 1234.5
-    assert snap.o2_storage_g == 678.0
+    assert snap.co2_storage_kg == 1234.5
+    assert snap.o2_storage_kg == 678.0
     assert snap.product_water_reserve_l == 42.0
 
 
@@ -82,8 +82,8 @@ def test_poll_telemetry_parses_float_topics(monkeypatch):
 
     monkeypatch.setattr("environment.ssos.ros2.cli.subprocess.run", fake_run)
     snap = Ros2EclssBridge().poll_telemetry()
-    assert snap.co2_storage_g == 1234.5
-    assert snap.o2_storage_g == 678.0
+    assert snap.co2_storage_kg == 1234.5
+    assert snap.o2_storage_kg == 678.0
     assert snap.product_water_reserve_l == 42.0
 
 
@@ -133,8 +133,8 @@ def test_parallel_cli_poll_runs_echoes_concurrently(monkeypatch):
     monkeypatch.setattr("environment.ssos.ros2.cli.subprocess.run", fake_run)
     snap = Ros2EclssBridge().poll_telemetry()
     assert peak >= 2
-    assert snap.co2_storage_g == 1.0
-    assert snap.o2_storage_g == 2.0
+    assert snap.co2_storage_kg == 1.0
+    assert snap.o2_storage_kg == 2.0
     assert snap.product_water_reserve_l == 3.0
 
 
@@ -152,8 +152,8 @@ def test_poll_uses_rclpy_reader_when_available(monkeypatch):
         lambda: _FakeReader(),
     )
     snap = Ros2EclssBridge(topic_timeout_s=7.5, telemetry_max_age_s=15.0).poll_telemetry()
-    assert snap.co2_storage_g == 10.0
-    assert snap.o2_storage_g == 20.0
+    assert snap.co2_storage_kg == 10.0
+    assert snap.o2_storage_kg == 20.0
     assert snap.product_water_reserve_l == 30.0
 
 
@@ -371,7 +371,7 @@ def test_integration_poll_telemetry_when_eclss_running():
     """Requires SSOS ECLSS stack running (Docker). Skips on dev machines without ros2."""
     snap = Ros2EclssBridge(topic_timeout_s=5.0).poll_telemetry()
     # At least one storage topic should respond when ECLSS is up; otherwise fields stay None.
-    assert snap.co2_storage_g is not None or snap.o2_storage_g is not None or snap.raw_topics == {}
+    assert snap.co2_storage_kg is not None or snap.o2_storage_kg is not None or snap.raw_topics == {}
 
 
 @pytest.mark.skipif(not Ros2EclssBridge.ros2_available(), reason="ros2 CLI not available")

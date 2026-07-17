@@ -128,8 +128,8 @@ class Ros2EclssBridge:
         if water is not None:
             raw[TOPIC_WRS_PRODUCT_WATER_RESERVE] = water
         return EclssTelemetrySnapshot(
-            co2_storage_g=co2,
-            o2_storage_g=o2,
+            co2_storage_kg=co2,
+            o2_storage_kg=o2,
             product_water_reserve_l=water,
             ars_failure_enabled=self._failure_flags["ars"],
             ogs_failure_enabled=self._failure_flags["ogs"],

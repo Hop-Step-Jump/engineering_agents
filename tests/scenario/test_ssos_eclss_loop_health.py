@@ -24,15 +24,15 @@ def test_health_unknown_when_telemetry_missing():
 
 
 def test_telemetry_snapshot_to_dict_omits_nulls():
-    payload = EclssTelemetrySnapshot(co2_storage_g=10.0).to_dict()
-    assert payload == {"co2_storage_g": 10.0}
-    assert "o2_storage_g" not in payload
+    payload = EclssTelemetrySnapshot(co2_storage_kg=10.0).to_dict()
+    assert payload == {"co2_storage_kg": 10.0}
+    assert "o2_storage_kg" not in payload
 
 
 def test_summary_helpers_omit_null_metrics():
-    snap = EclssTelemetrySnapshot(co2_storage_g=12.5, o2_storage_g=480.0, raw_topics={"/co2_storage": 12.5})
+    snap = EclssTelemetrySnapshot(co2_storage_kg=12.5, o2_storage_kg=480.0, raw_topics={"/co2_storage": 12.5})
     fields = _telemetry_summary_fields(snap, peak_co2=12.5, min_o2=480.0)
-    assert fields["final_co2_storage_g"] == 12.5
+    assert fields["final_co2_storage_kg"] == 12.5
     assert "final_product_water_reserve_l" not in fields
     assert fields["telemetry_topics_read"] == ["/co2_storage"]
 
@@ -42,7 +42,7 @@ def test_summary_helpers_omit_null_metrics():
 
 def test_storage_telemetry_missing_detects_empty_snapshot():
     assert _storage_telemetry_missing(EclssTelemetrySnapshot()) is True
-    assert _storage_telemetry_missing(EclssTelemetrySnapshot(o2_storage_g=1.0)) is False
+    assert _storage_telemetry_missing(EclssTelemetrySnapshot(o2_storage_kg=1.0)) is False
 
 
 def test_assert_ros2_storage_telemetry_raises_when_empty():
@@ -61,10 +61,10 @@ def test_wait_for_ros2_storage_telemetry_returns_when_present():
             self._calls += 1
             if self._calls < 2:
                 return EclssTelemetrySnapshot()
-            return EclssTelemetrySnapshot(co2_storage_g=1500.0)
+            return EclssTelemetrySnapshot(co2_storage_kg=1500.0)
 
     snap = _wait_for_ros2_storage_telemetry(_Backend(), timeout_s=1.0, poll_interval_s=0.01)
-    assert snap.co2_storage_g == 1500.0
+    assert snap.co2_storage_kg == 1500.0
 
 
 def test_wait_for_ros2_storage_telemetry_times_out():

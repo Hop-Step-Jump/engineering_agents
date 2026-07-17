@@ -22,20 +22,20 @@ class LoopMockEclssBackend(MockEclssBackend):
         super().__init__()
         sim_cfg = config.get("simulation", {})
         mock_cfg = config.get("mock_dynamics", {})
-        self._co2 = float(sim_cfg.get("initial_co2_storage_g", 1650.0))
-        self._o2 = float(sim_cfg.get("initial_o2_storage_g", 480.0))
+        self._co2 = float(sim_cfg.get("initial_co2_storage_kg", 1650.0))
+        self._o2 = float(sim_cfg.get("initial_o2_storage_kg", 480.0))
         self._water = float(sim_cfg.get("initial_product_water_l", 100.0))
-        self._co2_growth = float(mock_cfg.get("co2_growth_g_per_step", 60.0))
-        self._ars_reduction = float(mock_cfg.get("ars_co2_reduction_g", 350.0))
-        self._ogs_o2_gain = float(mock_cfg.get("ogs_o2_gain_g", 100.0))
+        self._co2_growth = float(mock_cfg.get("co2_growth_kg_per_step", 60.0))
+        self._ars_reduction = float(mock_cfg.get("ars_co2_reduction_kg", 350.0))
+        self._ogs_o2_gain = float(mock_cfg.get("ogs_o2_gain_kg", 100.0))
 
     def advance_step(self) -> None:
         self._co2 += self._co2_growth
 
     def poll_telemetry(self) -> EclssTelemetrySnapshot:
         return EclssTelemetrySnapshot(
-            co2_storage_g=self._co2,
-            o2_storage_g=self._o2,
+            co2_storage_kg=self._co2,
+            o2_storage_kg=self._o2,
             product_water_reserve_l=self._water,
             ars_failure_enabled=self._failure_flags["ars"],
             ogs_failure_enabled=self._failure_flags["ogs"],

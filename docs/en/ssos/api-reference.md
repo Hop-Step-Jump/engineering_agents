@@ -17,8 +17,8 @@ Fetch the latest snapshot from ROS 2 topics.
 
 | Field | Source topic | Unit |
 | --- | --- | --- |
-| `co2_storage_g` | `/co2_storage` | g |
-| `o2_storage_g` | `/o2_storage` | g |
+| `co2_storage_kg` | `/co2_storage` | kg |
+| `o2_storage_kg` | `/o2_storage` | kg |
 | `product_water_reserve_l` | `/wrs/product_water_reserve` | L |
 | `ars_diagnostics` | `/ars/diagnostics` | str / dict |
 | `ogs_diagnostics` | `/ogs/diagnostics` | str / dict |

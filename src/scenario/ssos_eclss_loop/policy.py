@@ -7,9 +7,9 @@ from typing import Any, Dict
 
 # Verification thresholds mirrored into labeled_rule_base policy (not LLM prompts).
 THRESHOLD_POLICY_KEYS = (
-    "co2_storage_high_g",
-    "co2_storage_critical_g",
-    "o2_storage_low_g",
+    "co2_storage_high_kg",
+    "co2_storage_critical_kg",
+    "o2_storage_low_kg",
     "product_water_low_l",
 )
 

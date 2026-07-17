@@ -16,7 +16,7 @@ from scenario.ssos_eclss_loop.design_proposals import (
 def test_apply_action_profile_and_service_config():
     config = {
         "agents": {"policy": {"ars_goal": {"initial_co2_mass": 1000.0}}},
-        "thresholds": {"o2_storage_low_g": 400.0},
+        "thresholds": {"o2_storage_low_kg": 400.0},
     }
     proposals = {
         "design_domain": DESIGN_DOMAIN,
@@ -36,7 +36,7 @@ def test_apply_action_profile_and_service_config():
             },
             {
                 "change_kind": "set_parameter",
-                "payload": {"target": "thresholds.co2_storage_high_g", "value": 1600.0},
+                "payload": {"target": "thresholds.co2_storage_high_kg", "value": 1600.0},
             },
         ],
     }
@@ -44,7 +44,7 @@ def test_apply_action_profile_and_service_config():
     assert merged["agents"]["policy"]["ogs_goal"]["input_water_mass"] == 12.0
     assert merged["agents"]["policy"]["request_co2_amount"] == 30.0
     assert merged["agents"]["policy"]["request_co2_before_ogs"] is False
-    assert merged["thresholds"]["co2_storage_high_g"] == 1600.0
+    assert merged["thresholds"]["co2_storage_high_kg"] == 1600.0
     assert merged["agents"]["policy"]["ars_goal"]["initial_co2_mass"] == 1000.0
 
 
@@ -70,8 +70,8 @@ def test_apply_graph_rewire():
 
 def test_build_design_proposals_from_policy():
     policy = {
-        "co2_storage_high_g": 1500.0,
-        "o2_storage_low_g": 450.0,
+        "co2_storage_high_kg": 1500.0,
+        "o2_storage_low_kg": 450.0,
         "request_co2_amount": 25.0,
         "request_co2_before_ogs": True,
         "ars_goal": {"initial_co2_mass": 1800.0},

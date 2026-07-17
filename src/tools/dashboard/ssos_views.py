@@ -30,11 +30,11 @@ def render_ssos_health_card(
     with col1:
         st.metric("Step", current_step)
     with col2:
-        co2 = (current_telemetry or {}).get("co2_storage_g")
-        st.metric("CO2 storage (g)", f"{co2:.1f}" if isinstance(co2, (int, float)) else "—")
+        co2 = (current_telemetry or {}).get("co2_storage_kg")
+        st.metric("CO2 storage (kg)", f"{co2:.1f}" if isinstance(co2, (int, float)) else "—")
     with col3:
-        o2 = (current_telemetry or {}).get("o2_storage_g")
-        st.metric("O2 storage (g)", f"{o2:.1f}" if isinstance(o2, (int, float)) else "—")
+        o2 = (current_telemetry or {}).get("o2_storage_kg")
+        st.metric("O2 storage (kg)", f"{o2:.1f}" if isinstance(o2, (int, float)) else "—")
     with col4:
         water = (current_telemetry or {}).get("product_water_reserve_l")
         st.metric("Product water (L)", f"{water:.1f}" if isinstance(water, (int, float)) else "—")
@@ -58,13 +58,13 @@ def render_ssos_storage_plot(
         return
 
     steps = [int(r["step"]) for r in telemetry_rows]
-    co2 = [r.get("co2_storage_g") for r in telemetry_rows]
-    o2 = [r.get("o2_storage_g") for r in telemetry_rows]
+    co2 = [r.get("co2_storage_kg") for r in telemetry_rows]
+    o2 = [r.get("o2_storage_kg") for r in telemetry_rows]
     water = [r.get("product_water_reserve_l") for r in telemetry_rows]
 
     fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
-    axes[0].plot(steps, co2, label="CO2 storage (g)", color="#c44e52")
-    axes[1].plot(steps, o2, label="O2 storage (g)", color="#4c72b0")
+    axes[0].plot(steps, co2, label="CO2 storage (kg)", color="#c44e52")
+    axes[1].plot(steps, o2, label="O2 storage (kg)", color="#4c72b0")
     axes[2].plot(steps, water, label="Product water (L)", color="#55a868")
     for ax in axes:
         ax.legend(loc="upper left")

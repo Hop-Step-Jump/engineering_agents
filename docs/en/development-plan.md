@@ -61,7 +61,7 @@ This document aggregates **features not yet complete** and the **research backlo
 | LLM comparison experiments | Trajectory comparison across models, temperature, run_id (dashboard compare) | [architecture.md](architecture.md) |
 | Documentation | Sync `docs/ja/` and `docs/en/` with memo | this update |
 
-**Out of CLI v3 scope** (backlog): CO2=500g plant init, ros2 step-0 validation, rich SSOS Streamlit views — [BL-006](memo/backlog.md#bl-006)
+**Out of CLI v3 scope** (backlog): CO2=500kg plant init, ros2 step-0 validation, rich SSOS Streamlit views — [BL-006](memo/backlog.md#bl-006)
 
 **Next integration phase (under consideration)**: EA step vs SSOS physics time — expanded mock vs upstream sim clock — [BL-007](memo/backlog.md#bl-007) (separate from CLI v3 / Phase 8)
 
@@ -147,7 +147,7 @@ Details: [memo/scrubber_degradation/mvp_plan.md](memo/scrubber_degradation/mvp_p
 [ ssos_eclss_loop — Phase 0–7 complete ]
   EclssBackend (mock | ros2) → SsosEclssLoopTeam(Team)
        ↓ JSONL + design_proposals.json (ssos_graph)
-  Dashboard (storage g / operational timeline)
+  Dashboard (storage kg / operational timeline)
   ea-loop (Docker) + graph_rewire (client remap)
 
 [ Not connected / backlog ]

@@ -43,8 +43,8 @@ Constant: `LAUNCH_HEADLESS_ECLSS = "space_station/eclss.launch.py"`
 
 | Topic | Type | Field |
 | --- | --- | --- |
-| `/co2_storage` | `std_msgs/Float64` | CO₂ storage [g] |
-| `/o2_storage` | `std_msgs/Float64` | O₂ storage [g] |
+| `/co2_storage` | `std_msgs/Float64` | CO₂ storage [kg] |
+| `/o2_storage` | `std_msgs/Float64` | O₂ storage [kg] |
 | `/wrs/product_water_reserve` | `std_msgs/Float64` | Potable water reserve [L] |
 | `/ars/diagnostics` | diagnostic | ARS diagnostics |
 | `/ogs/diagnostics` | diagnostic | OGS diagnostics |
@@ -169,7 +169,7 @@ sequenceDiagram
 
   Agent->>BE: poll_telemetry()
   BE->>SSOS: ros2 topic echo /co2_storage
-  SSOS-->>BE: co2_storage_g
+  SSOS-->>BE: co2_storage_kg
   BE-->>Agent: EclssTelemetrySnapshot
 
   Agent->>BE: send_air_revitalisation_goal(ArsGoal)

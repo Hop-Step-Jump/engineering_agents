@@ -209,9 +209,9 @@ docker exec -it ssos bash -lc '
 '
 ```
 
-**Pass criteria**: exit code 0; `poll_telemetry()` obtains `/co2_storage` and `/o2_storage`; `oxygen_generation` goal SUCCEEDED; O₂/CO₂ Sabatier contention signal (`sabatier_signal: true`). `request_co2` **succeeds** or **expected rejection due to insufficient CO₂** (`request_co2_expected_insufficient: true` — headless real plant typically has `/co2_storage=0 g`).
+**Pass criteria**: exit code 0; `poll_telemetry()` obtains `/co2_storage` and `/o2_storage`; `oxygen_generation` goal SUCCEEDED; O₂/CO₂ Sabatier contention signal (`sabatier_signal: true`). `request_co2` **succeeds** or **expected rejection due to insufficient CO₂** (`request_co2_expected_insufficient: true` — headless real plant typically has `/co2_storage=0 kg`).
 
-**Troubleshooting — `Insufficient CO₂ in storage`**: Normal response when **SSOS plant real storage** is 0 g, not this repo's mock initial values. Without Crew Simulation, headless mode does not accumulate CO₂. Smoke verifies service reachability + OGS success (PASS with `request_co2_expected_insufficient` when insufficient). To see `request_co2` succeed with CO₂ available, re-run after Crew is running.
+**Troubleshooting — `Insufficient CO₂ in storage`**: Normal response when **SSOS plant real storage** is 0 kg, not this repo's mock initial values. Without Crew Simulation, headless mode does not accumulate CO₂. Smoke verifies service reachability + OGS success (PASS with `request_co2_expected_insufficient` when insufficient). To see `request_co2` succeed with CO₂ available, re-run after Crew is running.
 
 **Troubleshooting — parsing**: Jazzy `ros2 service call` output may be Python repr instead of YAML. `Ros2EclssBridge` parses both formats. Manual: `ros2 service call /ars/request_co2 space_station_interfaces/srv/Co2Request "{amount: 25.0}"`.
 

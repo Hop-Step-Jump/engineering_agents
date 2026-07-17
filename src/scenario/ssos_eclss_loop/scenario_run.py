@@ -50,8 +50,8 @@ def _omit_nulls(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 def _storage_telemetry_missing(snap: EclssTelemetrySnapshot) -> bool:
     return (
-        snap.co2_storage_g is None
-        and snap.o2_storage_g is None
+        snap.co2_storage_kg is None
+        and snap.o2_storage_kg is None
         and snap.product_water_reserve_l is None
     )
 
@@ -96,18 +96,18 @@ def _telemetry_summary_fields(
 ) -> Dict[str, Any]:
     fields: Dict[str, Any] = {}
     if peak_co2 is not None:
-        fields["peak_co2_storage_g"] = round(peak_co2, 2)
+        fields["peak_co2_storage_kg"] = round(peak_co2, 2)
     if last_snap is not None:
-        if last_snap.co2_storage_g is not None:
-            fields["final_co2_storage_g"] = last_snap.co2_storage_g
-        if last_snap.o2_storage_g is not None:
-            fields["final_o2_storage_g"] = last_snap.o2_storage_g
+        if last_snap.co2_storage_kg is not None:
+            fields["final_co2_storage_kg"] = last_snap.co2_storage_kg
+        if last_snap.o2_storage_kg is not None:
+            fields["final_o2_storage_kg"] = last_snap.o2_storage_kg
         if last_snap.product_water_reserve_l is not None:
             fields["final_product_water_reserve_l"] = last_snap.product_water_reserve_l
         if last_snap.raw_topics:
             fields["telemetry_topics_read"] = sorted(last_snap.raw_topics.keys())
     if min_o2 is not None:
-        fields["min_o2_storage_g"] = round(min_o2, 2)
+        fields["min_o2_storage_kg"] = round(min_o2, 2)
     return fields
 
 
@@ -235,17 +235,17 @@ class SsosEclssLoopScenario(Scenario):
             if backend_kind == "ros2":
                 _assert_ros2_storage_telemetry(step, snap)
             last_snap = snap
-            if snap.co2_storage_g is not None:
+            if snap.co2_storage_kg is not None:
                 peak_co2 = (
-                    snap.co2_storage_g
+                    snap.co2_storage_kg
                     if peak_co2 is None
-                    else max(peak_co2, snap.co2_storage_g)
+                    else max(peak_co2, snap.co2_storage_kg)
                 )
-            if snap.o2_storage_g is not None:
+            if snap.o2_storage_kg is not None:
                 min_o2 = (
-                    snap.o2_storage_g
+                    snap.o2_storage_kg
                     if min_o2 is None
-                    else min(min_o2, snap.o2_storage_g)
+                    else min(min_o2, snap.o2_storage_kg)
                 )
 
             health = compute_eclss_storage_health(step, snap, thresholds)

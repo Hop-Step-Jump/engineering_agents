@@ -15,7 +15,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 
 | ID | Kind | Summary | Severity | Status |
 | --- | --- | --- | --- | --- |
-| A | Units | Plant **g** vs EA mislabel **kg** (values already gram-scale) | Critical | **fixed** |
+| A | Units | Plant **g** vs EA **kg** (~1000×) | Critical | open |
 | B | Units | `input_water_mass` subtracted from L tank without conversion | High | open |
 | C | Units | Goal/Service argument units undefined / doc conflict | High | open |
 | D | Docs | Product water mislabeled as kg (should be L) | Low | open |
@@ -39,10 +39,10 @@ Suggested order: **A → E → F → B → G → C → I → J → H → L → M
 
 ## A — Plant grams vs EA kilograms
 
-**Status**: **fixed** (2026-07-13)  
-**Resolution**: Canonical unit is **grams** (matches SSOS plant caps). Renamed mislabeled `*_kg` storage fields/keys/docs to `*_g`. No numeric rescale.
+**Status**: open  
+**Key files**: physical phenomena overview (`(g)` caps), `scenario.yaml` / `health.py` (`*_kg`), `types.py` field names, api-reference (claims kg).
 
-Remaining: Goal field unit annotations → **C**; product-water kg typo → **D**.
+**Evidence (ros2 E2E)**: `input_water_mass: 10` → `total_o2_generated ≈ 8.9` (= 10×0.89, gram scale). `final_o2 ≈ 26.7` with `o2_status: critical` against 450 “kg” threshold.
 
 ---
 
@@ -114,7 +114,7 @@ Fixed −350 / +100 / −30; parent `total_o2_generated: 120` unrelated to water
 ## J — `co2_critical` unused by labeled
 
 **Status**: open (BL-004)  
-Health evaluates critical; labeled uses `co2_storage_high_g` only.
+Health evaluates critical; labeled uses `co2_storage_high_kg` only.
 
 ---
 

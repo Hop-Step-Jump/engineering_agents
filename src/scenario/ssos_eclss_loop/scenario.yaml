@@ -5,8 +5,8 @@ description: >
 
 simulation:
   steps: 8
-  initial_co2_storage_g: 1500.0
-  initial_o2_storage_g: 480.0
+  initial_co2_storage_kg: 1500.0
+  initial_o2_storage_kg: 480.0
   initial_product_water_l: 100.0
 
 backend:
@@ -17,14 +17,14 @@ backend:
     startup_wait_s: 45.0
 
 mock_dynamics:
-  co2_growth_g_per_step: 60.0
-  ars_co2_reduction_g: 350.0
-  ogs_o2_gain_g: 100.0
+  co2_growth_kg_per_step: 60.0
+  ars_co2_reduction_kg: 350.0
+  ogs_o2_gain_kg: 100.0
 
 thresholds:
-  co2_storage_high_g: 1500.0
-  co2_storage_critical_g: 2200.0
-  o2_storage_low_g: 450.0
+  co2_storage_high_kg: 1500.0
+  co2_storage_critical_kg: 2200.0
+  o2_storage_low_kg: 450.0
   product_water_low_l: 50.0
 
 agents:

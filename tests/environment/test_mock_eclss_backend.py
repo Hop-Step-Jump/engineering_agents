@@ -14,8 +14,8 @@ def test_mock_backend_satisfies_protocol():
 
 def test_mock_poll_telemetry_returns_defaults():
     snap = MockEclssBackend().poll_telemetry()
-    assert snap.co2_storage_g == 1800.0
-    assert snap.o2_storage_g == 500.0
+    assert snap.co2_storage_kg == 1800.0
+    assert snap.o2_storage_kg == 500.0
     assert snap.product_water_reserve_l == 100.0
 
 
