@@ -19,7 +19,7 @@ Japanese: [known_bugs_inventory.md](../../../ja/memo/ssos_eclss_loop/known_bugs_
 | B | Units | `input_water_mass` subtracted from L tank without conversion | High | open |
 | C | Units | Goal/Service argument units undefined / doc conflict | High | open |
 | D | Docs | Product water mislabeled as mass unit (should be L) | Low | **fixed** |
-| E | Dynamics | `request_co2` **increases** storage (should withdraw) | Critical | **fixed** |
+| E | Dynamics | `request_co2` **increases** storage (should withdraw) | Critical | open |
 | F | Dynamics | OGS water use not reflected in loop `_water` | High | open |
 | G | Dynamics | ARS/OGS ignore goals; fixed offsets only | High | open |
 | H | Config | Mock initial CO₂/O₂ disagree across three sources | Low | open |
@@ -71,8 +71,9 @@ Plant docs: masses in **g**, iodine **2 mg/L**.
 
 ## E — `request_co2` sign inverted
 
-**Status**: **fixed** (2026-07-13)  
-**File**: `loop_mock_backend.py` — withdraw CO₂ on success (same pattern as `request_o2`).
+**Status**: open  
+**File**: `loop_mock_backend.py` — `self._co2 += amount`  
+Overview: OGS **fetches** CO₂ from ARS. `request_o2` correctly subtracts.
 
 ---
 

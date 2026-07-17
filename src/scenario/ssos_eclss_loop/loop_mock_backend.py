@@ -54,10 +54,8 @@ class LoopMockEclssBackend(MockEclssBackend):
         return result
 
     def request_co2(self, amount: float) -> ServiceResult:
-        """Withdraw CO2 from plant storage (/co2_storage) for Sabatier feedstock."""
         result = super().request_co2(amount)
-        if result.success:
-            self._co2 = max(0.0, self._co2 - min(self._co2, amount))
+        self._co2 += amount
         return result
 
     def request_o2(self, amount: float) -> ServiceResult:

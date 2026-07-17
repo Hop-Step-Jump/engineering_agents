@@ -17,7 +17,7 @@
 | B | 単位 | `input_water_mass` を L タンクから無変換減算 | High | open |
 | C | 単位 | Goal/Service 引数の単位未定義・文書矛盾 | High | open |
 | D | 文書 | 製品水を質量単位と誤記（正は L） | Low | **fixed** |
-| E | 力学 | `request_co2` が貯蔵を増やす（取り出しと逆） | Critical | **fixed** |
+| E | 力学 | `request_co2` が貯蔵を増やす（取り出しと逆） | Critical | open |
 | F | 力学 | OGS 水消費がループ用 `_water` に未反映 | High | open |
 | G | 力学 | ARS/OGS が goal を無視し固定オフセット | High | open |
 | H | 設定 | mock 初期値（CO₂/O₂）の三者不一致 | Low | open |
@@ -77,10 +77,10 @@ OGS で `product_water_reserve_l -= input_water_mass`。フィールド名は質
 
 ## E — `request_co2` 符号逆
 
-**状態**: **fixed**（2026-07-13）  
+**状態**: open  
 **主なファイル**: `src/scenario/ssos_eclss_loop/loop_mock_backend.py`
 
-`request_co2` を `request_o2` と同様、成功時に貯蔵から減算するよう修正（Sabatier 用の ARS からの取り出し）。
+`self._co2 += amount`。現象 overview では OGS が ARS から CO₂ を**取得**（減算）。同ファイルの `request_o2` は正しく減算。復旧手順が CO₂ 警告を悪化させる。
 
 ---
 
