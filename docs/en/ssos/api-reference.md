@@ -7,7 +7,7 @@ Key methods on the `EclssBackend` and `EpsBackend` Protocols. Source docstrings 
 
 ## EclssBackend
 
-**Definition**: `src/environment/ssos/eclss/backend.py`
+**Definition**: `src/environment/ssos/eclss_backend.py`
 
 ECLSS operation interface replacing Crew Simulation. Phase 1b covers ARS+OGS; Phase 2 adds WRS.
 
@@ -116,12 +116,14 @@ Publishes `std_msgs/Bool`. For verification and fault injection.
 
 | Class | File | Use |
 | --- | --- | --- |
-| `MockEclssBackend` | `src/environment/ssos/eclss/mock/backend.py` | pytest |
-| `LoopMockEclssBackend` | `src/scenario/ssos_eclss_loop/loop_mock_backend.py` | ssos_eclss_loop |
-| `Ros2EclssBridge` | `src/environment/ssos/eclss/ros2/bridge.py` | SSOS Docker |
+| `MockEclssBackend` | `mock_eclss_backend.py` | pytest |
+| `LoopMockEclssBackend` | `loop_mock_backend.py` | ssos_eclss_loop |
+| `Ros2EclssBridge` | `ros2_eclss_bridge.py` | SSOS Docker |
 
 ```python
-from environment.ssos.eclss import MockEclssBackend, Ros2EclssBridge, ArsGoal, OgsGoal
+from environment.ssos.mock_eclss_backend import MockEclssBackend
+from environment.ssos.ros2_eclss_bridge import Ros2EclssBridge
+from environment.ssos.eclss_types import ArsGoal, OgsGoal
 
 backend = MockEclssBackend()
 snap = backend.poll_telemetry()
@@ -134,7 +136,7 @@ backend.request_co2(100.0)
 
 ## EpsBackend
 
-**Definition**: `src/environment/scrubber/eps/backend.py`
+**Definition**: `src/environment/ssos/eps_backend.py`
 
 EPS telemetry reads and discharge scheduling (supports `request_eps_boost`).
 
@@ -202,8 +204,8 @@ Priority:
 
 | Class | File | Selection |
 | --- | --- | --- |
-| `MockEpsBackend` | `src/environment/scrubber/eps/mock/backend.py` | `eps.backend: mock` |
-| `Ros2EpsBridge` | `src/environment/ssos/eps/ros2/bridge.py` | `eps.backend: ssos_eps` |
+| `MockEpsBackend` | `mock_eps_backend.py` | `eps.backend: mock` |
+| `Ros2EpsBridge` | `ros2_eps_bridge.py` | `eps.backend: ssos_eps` |
 
 ```python
 from scenario.runner import build_eps_backend
@@ -220,9 +222,9 @@ watts = eps.consume_scheduled_support()
 
 | Type | File |
 | --- | --- |
-| `EclssTelemetrySnapshot`, `ActionResult`, `ServiceResult` | `src/environment/ssos/eclss/types.py` |
-| `BcduStatus`, `DischargeResult`, `SarjReading` | `src/environment/scrubber/eps/types.py` |
-| `EclssLoopObservation`, `EclssOperationalCommand` | `src/scenario/agents/eclss_loop_types.py` |
+| `EclssTelemetrySnapshot`, `ActionResult`, `ServiceResult` | `eclss_types.py` |
+| `BcduStatus`, `DischargeResult`, `SarjReading` | `eps_types.py` |
+| `EclssLoopObservation`, `EclssOperationalCommand` | `scenario/agents/eclss_loop_types.py` |
 
 ---
 
