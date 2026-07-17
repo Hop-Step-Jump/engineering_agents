@@ -38,17 +38,6 @@ def execute_run(spec: RunSpec) -> RunResult:
                 run_id=spec.run_id,
                 results_root=spec.results_root,
             )
-        elif spec.scenario == "scrubber_degradation":
-            from scenario.scrubber_degradation.scenario_run import ScrubberDegradationScenario
-
-            run_dir = ScrubberDegradationScenario().run(
-                output_dir=spec.output_dir,
-                overrides=overrides,
-                recreate_output=spec.recreate_output,
-                apply_proposals_path=spec.apply_proposals_path,
-                run_id=spec.run_id,
-                results_root=spec.results_root,
-            )
         else:
             run_dir = scenario.run(
                 output_dir=spec.output_dir,
