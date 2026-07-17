@@ -147,8 +147,8 @@ Product water (WRS) → electrolysis → O₂ (crew) + H₂
 | --- | --- | --- |
 | `o2_efficiency` | Electrolysis O₂ generation efficiency | 0.95 |
 | `sabatier_efficiency` | Sabatier conversion efficiency | 0.75 |
-| `electrolysis_temp` | Electrolysis operating temperature (°C) | 100.0 |
-| `sabatier_temp` | Sabatier reaction temperature (°C) | 300.0 |
+| `electrolysis_temp` | Electrolysis operating temperature | 100.0 |
+| `sabatier_temp` | Sabatier reaction temperature (K) | 300.0 |
 | `min_o2_capacity` / `max_o2_capacity` | O₂ storage safe range (g) | 100 / 10000 |
 
 **References**:
