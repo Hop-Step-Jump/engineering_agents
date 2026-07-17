@@ -160,42 +160,6 @@ def test_loop_mock_request_co2_withdraws_plant_storage():
     assert backend.poll_telemetry().co2_storage_g == pytest.approx(75.0)
 
 
-def test_apply_outcome_rejects_failed_command_and_rearms():
-    from environment.ssos.eclss.types import ServiceResult
-    from scenario.agents.eclss_loop_types import EclssOperationalCommand, StepEclssOutcome
-
-    team = SsosEclssLoopTeam(_team_config())
-    backend = LoopMockEclssBackend(
-        {"simulation": {"initial_co2_storage_g": 100.0}, "mock_dynamics": {}}
-    )
-
-    def _fail_request_co2(amount: float) -> ServiceResult:
-        return ServiceResult(
-            success=False,
-            response_value=0.0,
-            message="Insufficient CO₂ in storage",
-        )
-
-    backend.request_co2 = _fail_request_co2  # type: ignore[method-assign]
-    team.state.co2_requested = True
-    events = team.apply_outcome(
-        backend,
-        StepEclssOutcome(
-            commands=[
-                EclssOperationalCommand(
-                    kind="request_co2",
-                    payload={"amount": 25.0},
-                    issued_by="op_1",
-                )
-            ]
-        ),
-    )
-    assert len(events) == 1
-    assert events[0]["kind"] == "/eclss/events/operational_rejected"
-    assert events[0]["result"]["success"] is False
-    assert team.state.co2_requested is False
-
-
 def test_llm_operational_parse_air_revitalisation_and_request_co2():
     team = SsosEclssLoopTeam({"mode": "llm", "team": {"count": 1, "id_prefix": "op"}, "llm": {}})
     cmd, note = team._parse_llm_operational_command(

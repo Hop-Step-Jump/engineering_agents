@@ -21,7 +21,7 @@
 | F | 力学 | OGS 水消費がループ用 `_water` に未反映 | High | open |
 | G | 力学 | ARS/OGS が goal を無視し固定オフセット | High | open |
 | H | 設定 | mock 初期値（CO₂/O₂）の三者不一致 | Low | open |
-| I | エージェント | 失敗でも `operational_applied` → 再試行なし | Medium | **fixed** |
+| I | エージェント | 失敗でも `operational_applied` → 再試行なし | Medium | open |
 | J | エージェント | `co2_critical` は health のみ、labeled 未使用 | Medium | open |
 | K | 閉ループ | scrubber 設計提案の次ラン再注入なし（既知） | High | open（既知 backlog） |
 | L | scrubber | 電力 `*_w` 名と実効スケール（×0.01/0.05）不一致 | Medium | open |
@@ -116,12 +116,10 @@ ARS 常時 −350 kg、OGS 常時 +100 O₂ / CO₂ −30。親の `total_o2_gen
 
 ## I — コマンド失敗を成功扱い
 
-**状態**: **fixed**（2026-07-13）  
-**主なファイル**: `src/scenario/agents/ssos_eclss_loop_team.py`、`scenario_run.py`
+**状態**: open（BL-004 エッジケースにも記載）  
+**主なファイル**: `src/scenario/agents/ssos_eclss_loop_team.py`
 
-- `result.success` が False のとき `/eclss/events/operational_rejected` を記録
-- 失敗時に labeled ワンショットフラグをクリアして再試行可能に
-- summary の `*_invoked_step` は applied のみをカウント
+`result.success` に依らず `operational_applied`。E2E では `request_co2` 不足でも applied → 直後 OGS。
 
 ---
 

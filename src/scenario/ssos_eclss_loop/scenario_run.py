@@ -263,8 +263,6 @@ class SsosEclssLoopScenario(Scenario):
                     message_count += 1
                 for event in events:
                     log.append("events", {"step": step, **event})
-                    if event.get("kind") != "/eclss/events/operational_applied":
-                        continue
                     cmd = (event.get("command") or {})
                     cmd_kind = cmd.get("kind")
                     if cmd_kind == "air_revitalisation" and ars_invoked_step is None:
